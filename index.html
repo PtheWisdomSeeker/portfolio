@@ -182,7 +182,7 @@
   position: relative;
 }
 
-/* Animated divider under section titles */
+ /*Animated divider under section titles */
 .section-title::after {
   content: '';
   position: absolute;
@@ -201,7 +201,29 @@
       opacity: 1;
       transform: translateY(0);
     }
+/* Per-letter hover for section titles */
+.title-letters span {
+  display: inline-block;
+  color: var(--white);
+  transition: color 0.35s ease, transform 0.35s ease;
+}
 
+/* When you hover the whole title */
+.title-letters:hover span {
+  color: rgba(212,175,55,0.8); /* gold-ish */
+}
+
+/* Staggered “slowly light up” effect */
+.title-letters span:nth-child(1) { transition-delay: 0.00s; }
+.title-letters span:nth-child(2) { transition-delay: 0.04s; }
+.title-letters span:nth-child(3) { transition-delay: 0.08s; }
+.title-letters span:nth-child(4) { transition-delay: 0.12s; }
+.title-letters span:nth-child(5) { transition-delay: 0.16s; }
+.title-letters span:nth-child(6) { transition-delay: 0.20s; }
+.title-letters span:nth-child(7) { transition-delay: 0.24s; }
+.title-letters span:nth-child(8) { transition-delay: 0.28s; }
+.title-letters span:nth-child(9) { transition-delay: 0.32s; }
+.title-letters span:nth-child(10) { transition-delay: 0.36s; }
     /* Content Blocks - Initially Invisible */
     .content-block {
       margin-bottom: 12vh;
@@ -508,7 +530,7 @@
 
     <!-- ABOUT -->
     <section id="about">
-      <h2 class="section-title">About me</h2>
+      <h2 class="section-title title-letters">   <span>A</span><span>b</span><span>o</span><span>u</span><span>t</span><span>&nbsp;</span><span>m</span><span>e</span> </h2>
       <p class="hero-text">
         Hello, my name is Pedro Costa Silva, it's nice to have you on my website! I created this space as an assignment for my Statistics class in my last year of college. I'm a senior majoring in Psychology, a subject for which I'm deeply passionate. I love cooking, playing soccer (I'm Brazilian), learning... I also love thinking deeply about what it means to be human.
       </p>
