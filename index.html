@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedro Costa Silva | Psychology Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--navy:#0d1b3e;--navy2:#152144;--navy3:#1c2d57;
+--accent:#7c9fd4;--gold:#c9a84c;--gold2:#e8c56a;
+--text:#e8edf5;--text2:#b0bdd0;--glass:rgba(255,255,255,0.05);
+}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--text);overflow-x:hidden}
+nav#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(13,27,62,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);letter-spacing:0.5px}
+.nav-links{display:flex;list-style:none;gap:2rem}
+.nav-links a{text-decoration:none;color:var(--text2);font-size:0.85rem;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.3s;padding-bottom:4px;border-bottom:2px solid transparent}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);border-bottom-color:var(--gold)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);transition:all 0.3s}
+.page{display:none;min-height:100vh;padding-top:64px;animation:fadeIn 0.5s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.hero{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(124,159,212,0.08) 0%,transparent 60%);pointer-events:none}
+.hero-content{position:relative;z-index:1;text-align:center;padding:2rem}
+.glitch{font-family:'Playfair Display',serif;font-size:clamp(4rem,12vw,9rem);font-weight:900;color:var(--gold);position:relative;letter-spacing:-2px}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;font-family:'Playfair Display',serif;font-size:inherit;font-weight:900}
+.glitch::before{color:var(--accent);animation:glitch1 3s infinite;clip-path:polygon(0 0,100% 0,100% 40%,0 40%)}
+.glitch::after{color:#e87070;animation:glitch2 3s infinite;clip-path:polygon(0 60%,100% 60%,100% 100%,0 100%)}
+@keyframes glitch1{0%,90%,100%{transform:translate(0)}92%{transform:translate(-3px,1px)}96%{transform:translate(3px,-1px)}}
+@keyframes glitch2{0%,90%,100%{transform:translate(0)}93%{transform:translate(3px,1px)}97%{transform:translate(-3px,-1px)}}
+.section-container{max-width:900px;margin:0 auto;padding:4rem 2rem}
+h2.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:700;color:var(--gold);margin-bottom:1rem}
+.divider{width:60px;height:3px;background:linear-gradient(90deg,var(--gold),var(--accent));border-radius:2px;margin-bottom:2rem}
+.card{background:var(--glass);border:1px solid rgba(201,168,76,0.15);border-radius:16px;padding:2rem;backdrop-filter:blur(8px);margin-bottom:1.5rem;transition:transform 0.3s,box-shadow 0.3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(201,168,76,0.12)}
+.card h3{font-family:'Playfair Display',serif;color:var(--gold2);font-size:1.3rem;margin-bottom:0.75rem}
+.card p,.card li{color:var(--text2);line-height:1.8;font-size:0.95rem}
+.card ul{padding-left:1.25rem}
+.tag{display:inline-block;background:rgba(124,159,212,0.15);color:var(--accent);border:1px solid rgba(124,159,212,0.3);border-radius:20px;padding:0.25rem 0.75rem;font-size:0.75rem;font-weight:600;letter-spacing:0.5px;margin:0.25rem 0.25rem 0.25rem 0;text-transform:uppercase}
+blockquote{border-left:3px solid var(--gold);padding-left:1.5rem;margin:1.5rem 0;font-style:italic;color:var(--text2);font-size:1.1rem}
+.featured-card{background:linear-gradient(135deg,rgba(28,45,87,0.9),rgba(21,33,68,0.95));border:2px solid var(--gold);border-radius:20px;padding:3rem;text-align:center;position:relative;overflow:hidden;margin-bottom:2rem}
+.featured-card::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,0.06),transparent 70%);pointer-events:none}
+.featured-pill{display:inline-block;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--navy);font-size:0.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:0.35rem 1rem;border-radius:20px;margin-bottom:1.5rem}
+.featured-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:900;color:var(--gold);line-height:1.1;margin-bottom:0.75rem}
+.featured-subtitle{font-style:italic;color:var(--accent);font-size:1.1rem;margin-bottom:1.5rem}
+.featured-desc{color:var(--text2);line-height:1.9;font-size:1rem;max-width:620px;margin:0 auto 2rem}
+.featured-meta{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem;font-size:0.85rem;color:var(--text2)}
+.featured-meta span{display:flex;align-items:center;gap:0.4rem}
+.btn-gold{display:inline-block;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--navy);font-weight:700;font-size:1rem;padding:0.9rem 2.5rem;border-radius:50px;text-decoration:none;transition:transform 0.3s,box-shadow 0.3s;letter-spacing:0.5px}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(201,168,76,0.4)}
+.contact-link{color:var(--gold);text-decoration:none;font-weight:500}
+.contact-link:hover{text-decoration:underline}
+@media(max-width:768px){
+.hamburger{display:flex}
+.nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:rgba(13,27,62,0.98);flex-direction:column;padding:1.5rem 2rem;gap:1rem;border-bottom:1px solid rgba(201,168,76,0.2)}
+.nav-links.open{display:flex}
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-brand">Pedro Costa Silva</div>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+    <li><a href="#" class="nav-link" data-page="about">About</a></li>
+    <li><a href="#" class="nav-link" data-page="philosophy">Philosophy</a></li>
+    <li><a href="#" class="nav-link" data-page="coursework">Coursework</a></li>
+    <li><a href="#" class="nav-link" data-page="presentations">Project Page</a></li>
+    <li><a href="#" class="nav-link" data-page="reflections">Reflections</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="glitch" data-text="Home">Home</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--accent);margin-top:1rem;font-weight:400">Psychology Portfolio</h2>
+      <blockquote style="max-width:560px;margin:2rem auto;text-align:left">&ldquo;Nothing in life is to be feared, it is only to be understood.&rdquo;</blockquote>
+      <p style="max-width:620px;margin:0 auto 2rem;color:var(--text2);line-height:1.9">The purpose of this portfolio is to showcase a bit of what I learned about real world applications that both a Statistical and Personality framework provide.</p>
+      <p style="color:var(--text2)">get in touch: <a class="contact-link" href="mailto:pedrocostasilva2003@gmail.com">pedrocostasilva2003@gmail.com</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="page">
+  <div class="section-container">
+    <h2 class="section-title">About</h2>
+    <div class="divider"></div>
+    <div class="card">
+      <h3>Pedro Costa Silva</h3>
+      <p>I am a student at Kean University studying Communications with a concentration in Public Relations and a minor in Political Science. I have a strong passion for using communication strategically to create meaningful change. My studies have given me a deep understanding of media, messaging, and how information shapes public perception.</p>
+    </div>
+    <div class="card">
+      <h3>Why Psychology?</h3>
+      <p>I chose to take Psychology because I believe understanding human behavior is fundamental to effective communication. Whether crafting a message or analyzing an audience, psychological insights are invaluable. This course gave me tools to better understand myself, others, and the systems we operate in.</p>
+    </div>
+    <div class="card">
+      <h3>Fun Facts</h3>
+      <ul>
+        <li>I am bilingual &mdash; I speak both English and Portuguese</li>
+        <li>I have a deep love for film, storytelling, and visual media</li>
+        <li>I am passionate about immigration law and social justice</li>
+        <li>I love graphic design and using Adobe Creative Suite</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section id="philosophy" class="page">
+  <div class="section-container">
+    <h2 class="section-title">Philosophy</h2>
+    <div class="divider"></div>
+    <div class="card">
+      <h3>My Educational Philosophy</h3>
+      <p>I believe education is most powerful when it is connected to real-world application. Knowledge without context is incomplete. Throughout this course, I have tried to bridge theory with lived experience &mdash; understanding not just what the research says, but how it manifests in everyday life, relationships, and society.</p>
+    </div>
+    <div class="card">
+      <h3>On Statistics &amp; Personality</h3>
+      <p>Statistics gave me a framework for thinking critically and skeptically about claims. Personality psychology gave me a lens for understanding individual differences and human complexity. Together, they have sharpened how I think, communicate, and engage with the world around me.</p>
+    </div>
+    <div class="card">
+      <h3>Core Beliefs</h3>
+      <ul>
+        <li>Curiosity is the foundation of learning</li>
+        <li>Data should inform, not replace, human judgment</li>
+        <li>Empathy and evidence are not opposites</li>
+        <li>Growth requires discomfort and honest self-reflection</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- COURSEWORK -->
+<section id="coursework" class="page">
+  <div class="section-container">
+    <h2 class="section-title">Coursework</h2>
+    <div class="divider"></div>
+    <div class="card">
+      <h3>PSY 1100 &mdash; General Psychology</h3>
+      <span class="tag">Core</span>
+      <p style="margin-top:0.75rem">Foundations of psychology including biological bases of behavior, sensation and perception, states of consciousness, learning, memory, cognition, motivation and emotion, developmental psychology, personality, psychological disorders, and social behavior.</p>
+    </div>
+    <div class="card">
+      <h3>PSY 2200 &mdash; Statistics for the Behavioral Sciences</h3>
+      <span class="tag">Statistics</span>
+      <p style="margin-top:0.75rem">Introduction to statistical methods used in psychological research. Topics include descriptive statistics, probability, hypothesis testing, t-tests, ANOVA, correlation, and regression. Emphasis on interpretation and critical evaluation of data.</p>
+    </div>
+    <div class="card">
+      <h3>PSY 3090 &mdash; Personality Psychology</h3>
+      <span class="tag">Personality</span>
+      <p style="margin-top:0.75rem">Survey of major theories of personality including psychoanalytic, humanistic, trait, behavioral, and cognitive-social approaches. Topics include personality assessment, research methods, and the role of culture and biology in shaping personality.</p>
+    </div>
+    <div class="card">
+      <h3>PSY 309 &mdash; Statistics Lab Assignments</h3>
+      <span class="tag">Lab</span>
+      <p style="margin-top:0.75rem">Hands-on application of statistical concepts using real datasets. Assignments included computing descriptive statistics, running t-tests and ANOVAs, interpreting output, and writing APA-style results sections.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT PAGE -->
+<section id="presentations" class="page">
+  <div class="section-container">
+    <h2 class="section-title">Project Page</h2>
+    <div class="divider"></div>
+    <p style="color:var(--text2);margin-bottom:2.5rem;font-size:1rem;line-height:1.8">Great as a presentation &mdash; this project represents the intersection of psychological research, personal experience, and the drive to communicate ideas with clarity and passion.</p>
+    <div class="featured-card">
+      <div class="featured-pill">Featured Project</div>
+      <div class="featured-title">GRIT: The Fire That Stays</div>
+      <div class="featured-subtitle">Why effort, meaning, and control beat the myth of talent.</div>
+      <p class="featured-desc">An in-depth exploration of Angela Duckworth&rsquo;s theory of grit &mdash; passion and perseverance toward long-term goals. This presentation examines the research behind grit, its relationship to success, and what it means to truly commit to something bigger than yourself. Built with purpose, presented with fire.</p>
+      <div class="featured-meta">
+        <span>&#128218; PSY 309</span>
+        <span>&#127775; Personality &amp; Motivation</span>
+        <span>&#128203; Google Slides</span>
+      </div>
+      <a class="btn-gold" href="https://docs.google.com/presentation/d/1CfvkLcQ0e7zuUblPVAjDo1tfJqkQ0Xt40YTab7naOOQ/present" target="_blank" rel="noopener">Open Presentation &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- REFLECTIONS -->
+<section id="reflections" class="page">
+  <div class="section-container">
+    <h2 class="section-title">Reflections</h2>
+    <div class="divider"></div>
+    <div class="card">
+      <h3>What I Learned</h3>
+      <p>This course challenged me to think more rigorously and empathetically. Statistics taught me to question assumptions and demand evidence. Personality psychology reminded me that behind every data point is a human being with a complex inner world. Together, these disciplines have made me a more thoughtful communicator and a more curious person.</p>
+    </div>
+    <div class="card">
+      <h3>Personal Growth</h3>
+      <p>I came into this course thinking I already understood people pretty well. I left realizing how much I had to learn. The theories we studied &mdash; from the Big Five to Duckworth&rsquo;s grit &mdash; gave me frameworks I now use daily. I see personality differences more clearly. I evaluate arguments more carefully. I listen more intentionally.</p>
+    </div>
+    <div class="card">
+      <h3>Looking Forward</h3>
+      <p>The lessons from this course will carry into my career in communications and beyond. Understanding behavior, motivation, and individual differences is essential whether I&rsquo;m crafting a message, building a team, or navigating conflict. This portfolio is not just a record of work completed &mdash; it is a snapshot of who I am becoming.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const links = document.querySelectorAll('.nav-link');
+const pages = document.querySelectorAll('.page');
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+
+function showPage(id) {
+  pages.forEach(p => p.classList.remove('active'));
+  links.forEach(l => l.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) { target.classList.add('active'); window.scrollTo({top:0,behavior:'instant'}); }
+}
+
+links.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const page = link.getAttribute('data-page');
+    showPage(page);
+    link.classList.add('active');
+    navLinks.classList.remove('open');
+  });
+});
+
+hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+// Intersection observer for fade-in cards
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+}, {threshold:0.1});
+
+document.querySelectorAll('.card, .featured-card').forEach(el => {
+  el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
