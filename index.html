@@ -253,7 +253,7 @@
     .content-block li {
       font-size: clamp(1rem, 1.5vw, 1.1rem);
       line-height: 1.8;
-      color: rgba(255,255,255,1);
+      color: #FFFFFF;
       max-width: 70ch;
       transition: color 0.3s ease;
     }
@@ -731,7 +731,7 @@
         if (dist < 200) {
           el.style.color = `rgba(255,255,255,${Math.max(.6, 1 - dist / 200)})`;
         } else {
-          el.style.color = 'rgba(255,255,255,.1)';
+          el.style.color = 'rgba(255,255,255,.6)';
         }
       });
     });
