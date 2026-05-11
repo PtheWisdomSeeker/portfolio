@@ -1,838 +1,779 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wisdom Poku - Portfolio</title>
-<style>
-:root {
---gold: #D4AF37;
---white: #FFFFFF;
---black-1: #050505;
---black-2: #0B0B0C;
---black-3: #111111;
---black-4: #161616;
-}
-
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-
-body {
-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-color: rgba(255,255,255,.6);
-background: var(--black-1);
-overflow-x: hidden;
-cursor: none;
-}
-
-/* Layered background with depth */
-.bg-layer {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-pointer-events: none;
-z-index: 0;
-}
-
-.bg-layer-1 {
-background: radial-gradient(circle at 20% 50%, var(--black-2) 0%, transparent 50%);
-opacity: 0.4;
-}
-
-.bg-layer-2 {
-background: radial-gradient(circle at 80% 20%, var(--black-3) 0%, transparent 60%);
-opacity: 0.3;
-}
-
-.bg-layer-3 {
-background: radial-gradient(circle at 50% 80%, var(--black-4) 0%, transparent 70%);
-opacity: 0.2;
-}
-
-.bg-vignette {
-background: radial-gradient(ellipse at center, transparent 0%, var(--black-1) 100%);
-opacity: 0.8;
-}
-
-/* Three.js Canvas */
-#ocean-canvas {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-z-index: 1;
-pointer-events: none;
-}
-
-/* Custom Cursor */
-.cursor-dot, .cursor-ring {
-position: fixed;
-pointer-events: none;
-z-index: 10000;
-transform: translate(-50%, -50%);
-}
-
-.cursor-dot {
-width: 6px;
-height: 6px;
-background: var(--gold);
-border-radius: 50%;
-opacity: 1;
-}
-
-.cursor-ring {
-width: 32px;
-height: 32px;
-border: 1px solid var(--gold);
-border-radius: 50%;
-opacity: .4;
-transition: width .3s ease, height .3s ease, opacity .3s ease, border-color .3s ease;
-}
-
-/* Scroll Progress Bar */
-.progress-bar {
-position: fixed;
-top: 0;
-left: 0;
-height: 2px;
-background: linear-gradient(90deg, var(--gold), rgba(212, 175, 55, 0.5));
-width: 0%;
-z-index: 9999;
-transition: width 0.1s ease;
-}
-
-/* Navigation */
-nav {
-position: fixed;
-top: 0;
-width: 100%;
-padding: 2rem 5vw;
-display: flex;
-justify-content: space-between;
-align-items: center;
-z-index: 1000;
-backdrop-filter: blur(10px);
-background: linear-gradient(180deg, rgba(5,5,5,0.8) 0%, transparent 100%);
-}
-
-.logo {
-font-size: 1.5rem;
-font-weight: 700;
-color: var(--white);
-letter-spacing: 2px;
-}
-
-.nav-links {
-display: flex;
-gap: 3rem;
-list-style: none;
-}
-
-.nav-link {
-text-decoration: none;
-color: rgba(255,255,255,.6);
-font-size: 0.95rem;
-letter-spacing: 1px;
-transition: color .3s ease;
-text-transform: uppercase;
-font-weight: 500;
-}
-
-.nav-link:hover, .nav-link.active {
-color: var(--gold);
-}
-
-.hamburger {
-display: none;
-flex-direction: column;
-gap: 6px;
-cursor: pointer;
-}
-
-.hamburger span {
-width: 28px;
-height: 2px;
-background: var(--white);
-transition: .3s;
-}
-
-/* Main Content */
-main {
-position: relative;
-z-index: 2;
-}
-
-/* Section Styling */
-section {
-min-height: 100vh;
-padding: 15vh 10vw;
-display: flex;
-flex-direction: column;
-justify-content: center;
-}
-
-.section-title {
-font-size: clamp(2.5rem, 5vw, 4rem);
-font-weight: 700;
-color: var(--white);
-margin-bottom: 8vh;
-letter-spacing: -1px;
-opacity: 0;
-transform: translateY(30px);
-transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.section-title.in-view {
-opacity: 1;
-transform: translateY(0);
-}
-
-/* Content Blocks - Initially Invisible */
-.content-block {
-margin-bottom: 12vh;
-opacity: 0;
-transform: translateY(50px);
-transition: opacity 1s ease, transform 1s ease;
-}
-
-.content-block.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-.content-block h3 {
-font-size: clamp(1.5rem, 3vw, 2rem);
-color: var(--white);
-margin-bottom: 3vh;
-font-weight: 600;
-}
-
-.content-block p,
-.content-block li {
-font-size: clamp(1rem, 1.5vw, 1.1rem);
-line-height: 1.8;
-color: rgba(255,255,255,.6);
-max-width: 70ch;
-transition: color 0.3s ease;
-}
-
-.content-block ul {
-list-style: none;
-margin-top: 2vh;
-}
-
-.content-block li {
-padding-left: 2rem;
-position: relative;
-margin-bottom: 1.5vh;
-}
-
-.content-block li:before {
-content: '→';
-position: absolute;
-left: 0;
-color: var(--gold);
-}
-
-/* Home Section */
-#home {
-justify-content: center;
-align-items: center;
-text-align: center;
-padding-top: 20vh;
-}
-
-.hero-title {
-font-size: clamp(3.5rem, 8vw, 7rem);
-font-weight: 900;
-color: var(--white);
-margin-bottom: 3vh;
-letter-spacing: -2px;
-opacity: 0;
-animation: glitchFadeIn 1.5s ease forwards;
-}
-
-@keyframes glitchFadeIn {
-0% {
-opacity: 0;
-transform: translateY(20px);
-}
-100% {
-opacity: 1;
-transform: translateY(0);
-}
-}
-
-.hero-subtitle {
-font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-color: rgba(255,255,255,.7);
-margin-bottom: 6vh;
-letter-spacing: 2px;
-text-transform: uppercase;
-opacity: 0;
-animation: fadeInUp 1.5s ease 0.3s forwards;
-}
-
-@keyframes fadeInUp {
-0% {
-opacity: 0;
-transform: translateY(20px);
-}
-100% {
-opacity: 1;
-transform: translateY(0);
-}
-}
-
-.hero-quote {
-font-size: clamp(1.1rem, 2vw, 1.4rem);
-color: rgba(255,255,255,.5);
-max-width: 60ch;
-margin: 0 auto;
-font-style: italic;
-line-height: 1.8;
-opacity: 0;
-transform: translateY(30px);
-transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
-}
-
-#home .hero-quote.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-/* About Section */
-#about .hero-text {
-font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-color: rgba(255,255,255,.7);
-line-height: 1.6;
-max-width: 60ch;
-margin-bottom: 8vh;
-opacity: 0;
-transform: translateY(30px);
-transition: opacity 1s ease, transform 1s ease;
-}
-
-#about .hero-text.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-/* Featured Work Section */
-.featured-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-gap: 6vw;
-margin-top: 8vh;
-}
-
-.featured-card {
-padding: 4vh 3vw;
-border: 1px solid rgba(212, 175, 55, 0.2);
-background: rgba(212, 175, 55, 0.02);
-transition: all 0.4s ease;
-opacity: 0;
-transform: translateY(50px);
-}
-
-.featured-card.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-.featured-card:hover {
-border-color: var(--gold);
-background: rgba(212, 175, 55, 0.05);
-transform: translateY(-10px);
-}
-
-.featured-card h3 {
-color: var(--gold);
-margin-bottom: 2vh;
-font-size: clamp(1.3rem, 2vw, 1.6rem);
-}
-
-.featured-card p {
-font-size: clamp(0.95rem, 1.3vw, 1.05rem);
-line-height: 1.7;
-}
-
-/* Experience Section */
-.experience-item {
-margin-bottom: 8vh;
-padding-bottom: 6vh;
-border-bottom: 1px solid rgba(255,255,255,.1);
-}
-
-.experience-item:last-child {
-border-bottom: none;
-}
-
-.experience-header {
-display: flex;
-justify-content: space-between;
-align-items: baseline;
-margin-bottom: 3vh;
-flex-wrap: wrap;
-gap: 2vh;
-}
-
-.experience-title {
-font-size: clamp(1.5rem, 2.5vw, 1.8rem);
-color: var(--white);
-font-weight: 600;
-}
-
-.experience-period {
-font-size: clamp(0.9rem, 1.2vw, 1rem);
-color: var(--gold);
-letter-spacing: 1px;
-}
-
-/* Contact Section */
-#contact {
-align-items: center;
-text-align: center;
-}
-
-.contact-links {
-display: flex;
-gap: 4vw;
-justify-content: center;
-flex-wrap: wrap;
-margin-top: 6vh;
-}
-
-.contact-link {
-font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-color: rgba(255,255,255,.6);
-text-decoration: none;
-padding: 2vh 3vw;
-border: 1px solid rgba(212, 175, 55, 0.3);
-transition: all .3s ease;
-letter-spacing: 1px;
-}
-
-.contact-link:hover {
-color: var(--white);
-border-color: var(--gold);
-background: rgba(212, 175, 55, 0.1);
-transform: translateY(-5px);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-nav {
-padding: 1.5rem 5vw;
-}
-
-.nav-links {
-position: fixed;
-top: 0;
-left: -100%;
-width: 100%;
-height: 100vh;
-background: rgba(5,5,5,0.98);
-flex-direction: column;
-justify-content: center;
-align-items: center;
-transition: left 0.4s ease;
-gap: 3rem;
-backdrop-filter: blur(20px);
-}
-
-.nav-links.open {
-left: 0;
-}
-
-.hamburger {
-display: flex;
-z-index: 1001;
-}
-
-section {
-padding: 12vh 8vw;
-}
-
-.featured-grid {
-grid-template-columns: 1fr;
-}
-
-.hero-title {
-letter-spacing: -1px;
-}
-}
-
-@media (max-width: 480px) {
-section {
-padding: 10vh 6vw;
-}
-
-.content-block {
-margin-bottom: 8vh;
-}
-
-.section-title {
-margin-bottom: 6vh;
-}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedro Costa Silva - Psychology Portfolio</title>
+  <style>
+    :root {
+      --gold: #D4AF37;
+      --white: #FFFFFF;
+      --black-1: #050505;
+      --black-2: #0B0B0C;
+      --black-3: #111111;
+      --black-4: #161616;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: rgba(255,255,255,.6);
+      background: var(--black-1);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Layered background with depth */
+    .bg-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-layer-1 {
+      background: radial-gradient(circle at 20% 50%, var(--black-2) 0%, transparent 50%);
+      opacity: 0.4;
+    }
+
+    .bg-layer-2 {
+      background: radial-gradient(circle at 80% 20%, var(--black-3) 0%, transparent 60%);
+      opacity: 0.3;
+    }
+
+    .bg-layer-3 {
+      background: radial-gradient(circle at 50% 80%, var(--black-4) 0%, transparent 70%);
+      opacity: 0.2;
+    }
+
+    .bg-vignette {
+      background: radial-gradient(ellipse at center, transparent 0%, var(--black-1) 100%);
+      opacity: 0.8;
+    }
+
+    /* Custom Cursor */
+    .cursor-dot, .cursor-ring {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+    }
+
+    .cursor-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 1;
+    }
+
+    .cursor-ring {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      opacity: .4;
+      transition: width .3s ease, height .3s ease, opacity .3s ease, border-color .3s ease;
+    }
+
+    /* Scroll Progress Bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), rgba(212, 175, 55, 0.5));
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 2rem 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(5,5,5,0.8) 0%, transparent 100%);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: rgba(255,255,255,.6);
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      transition: color .3s ease;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--gold);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 28px;
+      height: 2px;
+      background: var(--white);
+      transition: .3s;
+    }
+
+    /* Main Content */
+    main {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Section Styling */
+    section {
+      min-height: 100vh;
+      padding: 15vh 10vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8vh;
+      letter-spacing: -1px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .section-title.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Content Blocks - Initially Invisible */
+    .content-block {
+      margin-bottom: 12vh;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .content-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .content-block h3 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--white);
+      margin-bottom: 3vh;
+      font-weight: 600;
+    }
+
+    .content-block p,
+    .content-block li {
+      font-size: clamp(1rem, 1.5vw, 1.1rem);
+      line-height: 1.8;
+      color: rgba(255,255,255,.6);
+      max-width: 70ch;
+      transition: color 0.3s ease;
+    }
+
+    .content-block ul {
+      list-style: none;
+      margin-top: 2vh;
+    }
+
+    .content-block li {
+      padding-left: 2rem;
+      position: relative;
+      margin-bottom: 1.5vh;
+    }
+
+    .content-block li:before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+
+    /* Home Section */
+    #home {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 20vh;
+    }
+
+    .hero-title {
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 3vh;
+      letter-spacing: -2px;
+      opacity: 0;
+      animation: glitchFadeIn 1.5s ease forwards;
+    }
+
+    @keyframes glitchFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      color: rgba(255,255,255,.7);
+      margin-bottom: 6vh;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease 0.3s forwards;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-quote {
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: rgba(255,255,255,.5);
+      max-width: 60ch;
+      margin: 0 auto;
+      font-style: italic;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+    }
+
+    #home .hero-quote.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* About Section */
+    #about .hero-text {
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: rgba(255,255,255,.7);
+      line-height: 1.6;
+      max-width: 60ch;
+      margin-bottom: 8vh;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    #about .hero-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Featured Work Section (for GRIT + future projects) */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 6vw;
+      margin-top: 8vh;
+    }
+
+    .featured-card {
+      padding: 4vh 3vw;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      background: rgba(212, 175, 55, 0.02);
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .featured-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .featured-card:hover {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.05);
+      transform: translateY(-10px);
+    }
+
+    .featured-card h3 {
+      color: var(--gold);
+      margin-bottom: 2vh;
+      font-size: clamp(1.3rem, 2vw, 1.6rem);
+    }
+
+    .featured-card p {
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      line-height: 1.7;
+    }
+
+    .featured-card a {
+      color: rgba(255,255,255,.8);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      padding-bottom: 2px;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .featured-card a:hover {
+      color: var(--white);
+      border-color: var(--gold);
+    }
+
+    /* Contact-style links (you can repurpose if needed later) */
+    .contact-links {
+      display: flex;
+      gap: 4vw;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      margin-top: 2vh;
+    }
+
+    .contact-link {
+      font-size: clamp(1rem, 1.4vw, 1.2rem);
+      color: rgba(255,255,255,.6);
+      text-decoration: none;
+      padding: 1.2vh 2.5vw;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      transition: all .3s ease;
+      letter-spacing: 1px;
+    }
+
+    .contact-link:hover {
+      color: var(--white);
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.1);
+      transform: translateY(-5px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        padding: 1.5rem 5vw;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: rgba(5,5,5,0.98);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: left 0.4s ease;
+        gap: 3rem;
+        backdrop-filter: blur(20px);
+      }
+
+      .nav-links.open {
+        left: 0;
+      }
+
+      .hamburger {
+        display: flex;
+        z-index: 1001;
+      }
+
+      section {
+        padding: 12vh 8vw;
+      }
+
+      .featured-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        letter-spacing: -1px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section {
+        padding: 10vh 6vw;
+      }
+
+      .content-block {
+        margin-bottom: 8vh;
+      }
+
+      .section-title {
+        margin-bottom: 6vh;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="progress-bar" id="progress"></div>
-<div class="cursor-dot" id="cursor-dot"></div>
-<div class="cursor-ring" id="cursor-ring"></div>
+  <div class="progress-bar" id="progress"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
 
-<div class="bg-layer bg-layer-1"></div>
-<div class="bg-layer bg-layer-2"></div>
-<div class="bg-layer bg-layer-3"></div>
-<div class="bg-layer bg-vignette"></div>
+  <div class="bg-layer bg-layer-1"></div>
+  <div class="bg-layer bg-layer-2"></div>
+  <div class="bg-layer bg-layer-3"></div>
+  <div class="bg-layer bg-vignette"></div>
 
-<canvas id="ocean-canvas"></canvas>
+  <nav>
+    <div class="logo">PEDRO COSTA SILVA</div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" class="nav-link active">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#philosophy" class="nav-link">Philosophy</a></li>
+      <li><a href="#coursework" class="nav-link">Coursework</a></li>
+      <li><a href="#presentations" class="nav-link">Project Page</a></li>
+      <li><a href="#reflections" class="nav-link">Reflections</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
 
-<nav>
-<div class="logo">WISDOM POKU</div>
-<ul class="nav-links" id="nav-links">
-<li><a href="#home" class="nav-link active">Home</a></li>
-<li><a href="#about" class="nav-link">About</a></li>
-<li><a href="#work" class="nav-link">Work</a></li>
-<li><a href="#experience" class="nav-link">Experience</a></li>
-<li><a href="#contact" class="nav-link">Contact</a></li>
-</ul>
-<div class="hamburger" id="hamburger">
-<span></span>
-<span></span>
-<span></span>
-</div>
-</nav>
+  <main>
+    <!-- HOME -->
+    <section id="home">
+      <h1 class="hero-title">PEDRO COSTA SILVA</h1>
+      <p class="hero-subtitle">Psychology & Statistics</p>
+      <p class="hero-quote">
+        "Nothing in life is to be feared, it is only to be understood."
+      </p>
+    </section>
 
-<main>
-<section id="home">
-<h1 class="hero-title">WISDOM POKU</h1>
-<p class="hero-subtitle">Creative Storyteller</p>
-<p class="hero-quote">"Every frame tells a story, every story builds a world."</p>
-</section>
+    <!-- ABOUT -->
+    <section id="about">
+      <h2 class="section-title">About me</h2>
+      <p class="hero-text">
+        Hello, my name is Pedro Costa Silva, it's nice to have you on my website! I created this space as an assignment for my Statistics class in my last year of college. I'm a senior majoring in Psychology, a subject for which I'm deeply passionate. I love cooking, playing soccer (I'm Brazilian), learning... I also love thinking deeply about what it means to be human.
+      </p>
 
-<section id="about">
-<h2 class="section-title">About Me</h2>
-<p class="hero-text">I am a student at Lindenwood University with a major in Communications and a minor in Political Science. I'm passionate about filmmaking, graphic design, and social justice work, constantly exploring how media can drive meaningful conversations and create positive change.</p>
+      <div class="content-block">
+        <h3>About my school</h3>
+        <p>
+          I attend Houghton University, a Christian private school in the deep rural parts of western New York. Despite any flaws, the place has got a beautiful environment around it; and I can say with confidence that I've been pushed towards success by professors who truly seem to care about me. That's what Houghton is: a place of growth for those who want it.
+        </p>
+      </div>
 
-<div class="content-block">
-<h3>Academic Interests</h3>
-<p>My studies focus on the intersection of media, politics, and social impact. I explore how communication strategies can amplify voices, shift perspectives, and inspire action across diverse communities.</p>
-</div>
+      <div class="content-block">
+        <h3>Contact</h3>
+        <p>
+          If you'd like to connect, collaborate, or talk about psychology, statistics, or soccer, feel free to reach out.
+        </p>
+        <div class="contact-links">
+          <a href="mailto:pedrocostasilva2003@gmail.com" class="contact-link">Email</a>
+        </div>
+      </div>
+    </section>
 
-<div class="content-block">
-<h3>Creative Philosophy</h3>
-<p>I believe in the power of storytelling to transform understanding. Whether through film, design, or written media, I strive to craft narratives that resonate emotionally while challenging audiences to think critically about the world around them.</p>
-</div>
-</section>
+    <!-- PHILOSOPHY -->
+    <section id="philosophy">
+      <h2 class="section-title">What learning means to me</h2>
 
-<section id="work">
-<h2 class="section-title">Featured Work</h2>
-<div class="featured-grid">
-<div class="featured-card">
-<h3>GRIT: The Fire Presentation</h3>
-<p>An impactful presentation exploring the concept of passion and perseverance, examining how resilience shapes success and character development.</p>
-</div>
-<div class="featured-card">
-<h3>Film Analysis Projects</h3>
-<p>Deep analytical studies of cinematic techniques, narrative structures, and directorial choices across various genres and time periods.</p>
-</div>
-<div class="featured-card">
-<h3>Graphic Design Portfolio</h3>
-<p>A collection of visual projects including infographics, editorial layouts, and brand identity work created with Adobe Creative Suite.</p>
-</div>
-</div>
-</section>
+      <div class="content-block">
+        <h3>Learning & Growth</h3>
+        <p>
+          <strong>Learning is about <em>growth</em></strong>. It is about destroying one's fundamental constructs about the world and rebuilding them back with stronger foundations, incessantly. It is to do what you can to remain intellectually honest, even when your <em>ego</em> does not want to. It requires a mindset of growth over scarcity—and it inherently carries a lesson worth taking anywhere: Vulnerability is a strength that gets you to where you want to be.
+        </p>
+        <p>
+          One does not learn without being vulnerable; without facing how much they do not know. Those who cling to the external image that they must have all the answers learn nothing—and in not learning, they do not grow.
+        </p>
+      </div>
 
-<section id="experience">
-<h2 class="section-title">Experience & Skills</h2>
+      <div class="content-block">
+        <h3>Statistics & Personality</h3>
+        <p>
+          Statistics, like any other discipline, equips an individual with a better heuristic than the one they were born with. Specifically, it involves various skills including (but not limited to): Critical Thinking, Interpretation of data, Working with uncertainty (which helps if you don't want to be driven by emotions). In addition, a framework for understanding human personality is fundamental to understand the microcosm of the self.
+        </p>
+        <p>
+          In doing so, we (hopefully) become better capable to love ourselves and byproduct those around us. I've learned that whereas statistics allows us to peek into the macrocosm with predictions, the study of personality humbles us to think back to the basics of what it means to function as a human, imperfectly.
+        </p>
+      </div>
+    </section>
 
-<div class="content-block">
-<div class="experience-item">
-<div class="experience-header">
-<h3 class="experience-title">Communications Student</h3>
-<span class="experience-period">Lindenwood University</span>
-</div>
-<p>Developing expertise in media production, strategic communication, and content creation. Focused on building skills that bridge creative expression and analytical thinking.</p>
-</div>
+    <!-- COURSEWORK -->
+    <section id="coursework">
+      <h2 class="section-title">Coursework</h2>
 
-<div class="experience-item">
-<div class="experience-header">
-<h3 class="experience-title">Digital Media Creation</h3>
-<span class="experience-period">Ongoing</span>
-</div>
-<p>Proficient in Adobe Creative Suite including InDesign, Illustrator, Fresco, and Lightroom. Creating visual content that combines aesthetic appeal with clear communication.</p>
-</div>
+      <div class="content-block">
+        <h3>Projects & Assignments (Psychology of Personality — Psy 301)</h3>
+        <p>
+          <strong>Personality Project.</strong> For this project in Psychology of Personality, I designed and attempted a six-week behavioral intervention aimed at increasing my conscientiousness, which initially tested at about the 4th percentile on the Big Five inventory. I created a system of weekly challenges focused on academic follow-through: attending every class I could, arriving on time with materials, and handwriting 100–150 word mini-reflections within six hours after each class. My plan was rooted in current personality-change research done by Hudson et al. (2019), who suggested that meaningful trait change depends on consistently enacting trait-relevant behaviors over time (not just willpower).
+        </p>
+      </div>
 
-<div class="experience-item">
-<div class="experience-header">
-<h3 class="experience-title">Research & Analysis</h3>
-<span class="experience-period">Academic Focus</span>
-</div>
-<p>Conducting in-depth research on topics spanning immigration law, political communication, and media literacy. Synthesizing complex information into accessible formats.</p>
-</div>
-</div>
+      <div class="content-block">
+        <h3>Factor Analysis</h3>
+        <p>
+          In this project, I was challenged to use an exploratory factor analysis to see whether a short personality survey would recover the classic Big Five traits from item-level data. I ran a Maximum Likelihood factor analysis with Promax rotation, suppressing loadings below .30 to focus on the strongest relationships between items and factors. The analysis showed a five-factor solution that closely approximated Extraversion, Agreeableness, Conscientiousness, Neuroticism, and Openness to Experience. I learned that abstract traits can emerge from concrete self-descriptions.
+        </p>
+      </div>
 
-<div class="content-block">
-<h3>Core Skills</h3>
-<ul>
-<li>Video Production & Film Analysis</li>
-<li>Graphic Design & Visual Communication</li>
-<li>Research & Critical Thinking</li>
-<li>Adobe Creative Suite (InDesign, Illustrator, Lightroom, Fresco)</li>
-<li>Content Strategy & Storytelling</li>
-<li>Political Communication & Social Justice Advocacy</li>
-</ul>
-</div>
-</section>
+      <div class="content-block">
+        <h3>Jamovi Projects (Statistics — Psy 309)</h3>
+        <p>
+          <strong>Project 1: Data exploration and descriptive statistics.</strong> I learned about the importance of visualizing data and summarizing it through measures of central tendency. For example, I reported on MLU (Mean Length of Utterance) for 20 patients and described the distribution in terms of mean, SD, range, and modal values.
+        </p>
+        <p>
+          <strong>Project 2: t-tests.</strong> I explored how inferential statistics can be used to make claims about the unknown. Using a one-sample t test, I compared a sample mean test score to a population mean and interpreted the significance of the difference when an outlier was included.
+        </p>
+        <p>
+          <strong>Project 3: ANOVA.</strong> I learned why controlling variability within groups is crucial when comparing them. A one-way ANOVA tested the effect of teaching method on reading comprehension, checking assumptions like homogeneity of variance and interpreting post-hoc tests.
+        </p>
+        <p>
+          <strong>Project 4: Correlation & Regression.</strong> I engaged deeply with the idea that “correlation is not causation.” I used Pearson correlation and simple linear regression to test relationships between medication dosage and heart rate, interpreting effect sizes, p-values, and explained variance.
+        </p>
+      </div>
 
-<section id="contact">
-<h2 class="section-title">Get In Touch</h2>
-<div class="content-block">
-<p>I'm always interested in connecting with fellow creatives, discussing new projects, or exploring opportunities in media and communications.</p>
-</div>
-<div class="contact-links">
-<a href="mailto:your.email@example.com" class="contact-link">Email</a>
-<a href="https://linkedin.com/in/yourprofile" class="contact-link" target="_blank">LinkedIn</a>
-<a href="https://github.com/Wisdomseek" class="contact-link" target="_blank">GitHub</a>
-</div>
-</section>
-</main>
+      <div class="content-block">
+        <h3>Chi-Square & Mindmap</h3>
+        <p>
+          <strong>Chi Square Method of Hypothesis.</strong> I used chi-square to examine how two categorical variables relate, framing it around soccer and nationality. I found that being Brazilian vs. American was statistically associated with soccer skill, illustrating how categorical relationships can be tested.
+        </p>
+        <p>
+          I also built a mind map for the whole Statistics course, connecting how descriptive statistics support prediction and inference. It helped me visualize how the pieces of the course fit together into a coherent framework.
+        </p>
+      </div>
+    </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-// Three.js Ocean Background
-const canvas = document.getElementById('ocean-canvas');
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    <!-- PRESENTATIONS / PROJECT PAGE -->
+    <section id="presentations">
+      <h2 class="section-title">Project Page</h2>
 
-camera.position.z = 50;
-camera.position.y = 30;
-camera.rotation.x = -0.5;
+      <div class="featured-grid">
+        <div class="featured-card">
+          <h3>GRIT: The Fire That Stays</h3>
+          <p>
+            Corny name aside, this is one of my favorite projects. The overall concept of behavioral motivation is one that I must admit was the reason I picked psychology as a major. I'm intrigued by ultra-athletes and understanding what separates them mentally from everyone else. That is what this project was all about.
+          </p>
+          <p>
+            <a href="https://docs.google.com/presentation/d/1CfvkLcQ0e7zuUblPVAjDo1tfJqkQ0Xt40YTab7naOOQ/present" target="_blank">
+              Open Presentation →
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
 
-// Create particle grid
-const gridSize = 80;
-const spacing = 2;
-const particles = new THREE.BufferGeometry();
-const positions = [];
-const indices = [];
+    <!-- REFLECTIONS -->
+    <section id="reflections">
+      <h2 class="section-title">Reflections</h2>
 
-for (let i = 0; i < gridSize; i++) {
-for (let j = 0; j < gridSize; j++) {
-positions.push(
-(i - gridSize / 2) * spacing,
-0,
-(j - gridSize / 2) * spacing
-);
-}
-}
+      <div class="content-block">
+        <h3>Writing Sample I'm Most Proud Of (Personality)</h3>
+        <p>
+          “The constructs we hold fundamentally shift how we experience ourselves and others around us. In a compensatory reflex toward self protection (what can also be called the EGO) we merge ourselves with extremes; even if the behavior is counterproductive. The major takeaway for me is that in order to become a more loving being, we ought to practice thinking of constructs (people, circumstances) in a continuous spectrum rather than in opposite, fixed states (Good, bad; Fair, unfair). In this way, I believe we ought to optimize our environments so that they can produce in us heuristics that yield positive results at the micro level (interpersonally) and the macro level (society as a whole).”
+        </p>
+      </div>
 
-// Create connections
-for (let i = 0; i < gridSize - 1; i++) {
-for (let j = 0; j < gridSize - 1; j++) {
-const a = i * gridSize + j;
-const b = i * gridSize + j + 1;
-const c = (i + 1) * gridSize + j;
-const d = (i + 1) * gridSize + j + 1;
+      <div class="content-block">
+        <h3>Expectations vs. Reality (Personality)</h3>
+        <p>
+          Frankly speaking, I did not expect much from it, as I had already taken a different version with a different professor before. I expected it to be fairly familiar conceptually, but I couldn't have been more wrong. Dr. Xeriland introduced various concepts borrowed from <em>Physics</em> in order for us to have a framework to understand personality (such as Chaos Theory). It was a bit stumping at first, but as I got accustomed to the different definitions, it allowed me to look at human personality through a lens I had never seen before.
+        </p>
+        <p>
+          Borrowing from Chaos Theory, we learned how personality can be looked at as both a fixed and fluid state, ever ebbing between those two poles. What we assume about the “predictable ways” that we act has more to do with our tendency to project order in a chaotic world than with any sense of an objective pattern. This course reminded me how both complex and simple people are; the more nuance the better.
+        </p>
+        <p>
+          Thanks to this course, I plan to use some of the later personality theories on behavior/motivation to experiment and improve my life across different goals that I have. Skinner's concept of Negative Reinforcement stands out to me as a powerful tool I can apply toward my objectives.
+        </p>
+      </div>
 
-indices.push(a, b);
-indices.push(a, c);
-indices.push(b, d);
-indices.push(c, d);
-}
-}
+      <div class="content-block">
+        <h3>Final Remarks (Personality)</h3>
+        <p>
+          One of the core advantages of studying personality is that being exposed to different ways of framing human behavior carries an inherent lesson on humility and compassion.
+        </p>
+        <p>
+          <strong>Humility;</strong> because to address any change in behavior in a highly westernized, idolizing culture of success, requires sacrificing a degree of self-protection, expressed as the ego. It requires a commitment to give up a part of oneself for the greater best.
+        </p>
+        <p>
+          <strong>Compassion;</strong> because when you're constantly allowing yourself to be exposed to your own vulnerabilities, you soon start noticing that other people have vulnerabilities as well, and that they shouldn't be judged for those things. That awareness lets you pause, think, and ask how you can help build that person up truly.
+        </p>
+      </div>
 
-particles.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-particles.setIndex(indices);
+      <div class="content-block">
+        <h3>Expectation vs Reality (Statistics)</h3>
+        <p>
+          My expectations coming into the class were that I'd be taught theorems and formulas all over again (I have taken this class and failed before), the same old same old. But what I actually got was an instructor who was committed to teaching the fundamental concepts of Statistics, not that we just memorize information and move along without learning anything. Having such commitment displayed in the classroom was by far the most satisfying part of the course. The most challenging part of it was the homework.
+        </p>
+      </div>
 
-const material = new THREE.LineBasicMaterial({
-color: 0xffffff,
-opacity: 0.15,
-transparent: true,
-linewidth: 1
-});
+      <div class="content-block">
+        <h3>How my Mind was Changed (Statistics)</h3>
+        <p>
+          My view of Statistics in the beginning of the semester had been that it is an amazing tool for finding out the “truth”. When I shared that thought to Dr. Xeriland, he quickly shut down the idea. He explained how you can never truly know the full picture, and that's why we have stats in the first place. So I've changed my mind to say that Stats is an excellent tool to achieve the most optimal level of clarity and accuracy when facing uncertainty about something bigger than what you can grasp.
+        </p>
+      </div>
 
-const oceanMesh = new THREE.LineSegments(particles, material);
-scene.add(oceanMesh);
+      <div class="content-block">
+        <h3>Final Remarks (Statistics)</h3>
+        <p>
+          Statistics is an incredible framework for anchoring yourself in a world that is constantly making claims about everything. As humans, we are incessantly curious—and so we ask questions, and it would be great if we stopped there. But we are also naturally prolific at jumping to conclusions that reflect what our biases want to hear. Statistical thinking provides an enormous advantage; the skill of being sober minded when making critical decisions based on what could most likely happen.
+        </p>
+      </div>
+    </section>
+  </main>
 
-// Add point particles
-const pointMaterial = new THREE.PointsMaterial({
-color: 0xffffff,
-size: 0.8,
-opacity: 0.4,
-transparent: true
-});
-const points = new THREE.Points(particles, pointMaterial);
-scene.add(points);
+  <script>
+    // Custom Cursor
+    const cursorDot = document.getElementById('cursor-dot');
+    const cursorRing = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
 
-// Add subtle gold highlights
-const highlightMaterial = new THREE.PointsMaterial({
-color: 0xD4AF37,
-size: 1.2,
-opacity: 0.08,
-transparent: true
-});
-const highlights = new THREE.Points(particles, highlightMaterial);
-scene.add(highlights);
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
 
-// Animation
-let time = 0;
-function animate() {
-requestAnimationFrame(animate);
-time += 0.002;
+      // Cursor proximity text brightening
+      const textElements = document.querySelectorAll('.content-block p, .content-block li, .hero-text, .hero-quote');
+      textElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const distX = mouseX - (rect.left + rect.width / 2);
+        const distY = mouseY - (rect.top + rect.height / 2);
+        const dist = Math.sqrt(distX * distX + distY * distY);
 
-const pos = particles.attributes.position.array;
+        if (dist < 200) {
+          el.style.color = `rgba(255,255,255,${Math.max(.6, 1 - dist / 200)})`;
+        } else {
+          el.style.color = 'rgba(255,255,255,.6)';
+        }
+      });
+    });
 
-for (let i = 0; i < gridSize; i++) {
-for (let j = 0; j < gridSize; j++) {
-const index = (i * gridSize + j) * 3;
-const x = (i - gridSize / 2) * spacing;
-const z = (j - gridSize / 2) * spacing;
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
 
-// Multi-layered wave motion
-const wave1 = Math.sin(x * 0.1 + time * 0.8) * 2;
-const wave2 = Math.sin(z * 0.1 + time * 0.6) * 1.5;
-const wave3 = Math.sin((x + z) * 0.05 + time) * 1.2;
+    // Cursor hover effects
+    document.querySelectorAll('a, button, .hamburger').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursorRing.style.width = '52px';
+        cursorRing.style.height = '52px';
+        cursorRing.style.borderColor = 'var(--gold)';
+        cursorRing.style.opacity = '1';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursorRing.style.width = '32px';
+        cursorRing.style.height = '32px';
+        cursorRing.style.borderColor = 'var(--gold)';
+        cursorRing.style.opacity = '.4';
+      });
+    });
 
-pos[index + 1] = wave1 + wave2 + wave3;
-}
-}
+    // Progress Bar
+    const progress = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progress.style.width = scrolled + '%';
+    });
 
-particles.attributes.position.needsUpdate = true;
+    // Navigation
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    const links = document.querySelectorAll('.nav-link');
 
-// Subtle camera drift
-camera.position.y = 30 + Math.sin(time * 0.3) * 2;
-camera.position.x = Math.sin(time * 0.2) * 3;
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    links.forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
 
-renderer.render(scene, camera);
-}
+    // Section Observer (active nav + section title)
+    const sections = document.querySelectorAll('section');
+    const observerOptions = {
+      root: null,
+      rootMargin: '-15% 0px -15% 0px',
+      threshold: 0.1
+    };
 
-animate();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = e.target.getAttribute('id');
+          links.forEach(l => l.classList.remove('active'));
+          const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+          if (activeLink) activeLink.classList.add('active');
 
-// Handle resize
-window.addEventListener('resize', () => {
-camera.aspect = window.innerWidth / window.innerHeight;
-camera.updateProjectionMatrix();
-renderer.setSize(window.innerWidth, window.innerHeight);
-});
+          const title = e.target.querySelector('.section-title');
+          if (title) title.classList.add('in-view');
+        }
+      });
+    }, observerOptions);
 
-// Custom Cursor
-const cursorDot = document.getElementById('cursor-dot');
-const cursorRing = document.getElementById('cursor-ring');
-let mouseX = 0, mouseY = 0;
-let ringX = 0, ringY = 0;
+    sections.forEach(s => observer.observe(s));
 
-document.addEventListener('mousemove', (e) => {
-mouseX = e.clientX;
-mouseY = e.clientY;
-cursorDot.style.left = mouseX + 'px';
-cursorDot.style.top = mouseY + 'px';
+    // Scroll-Reveal Observer
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
 
-// Cursor proximity text brightening
-const textElements = document.querySelectorAll('.content-block p, .content-block li, .hero-text');
-textElements.forEach(el => {
-const rect = el.getBoundingClientRect();
-const distX = mouseX - (rect.left + rect.width / 2);
-const distY = mouseY - (rect.top + rect.height / 2);
-const dist = Math.sqrt(distX * distX + distY * distY);
+    document.querySelectorAll('.content-block, .hero-quote, .hero-text, .featured-card').forEach(el => {
+      fadeObserver.observe(el);
+    });
 
-if (dist < 200) {
-el.style.color = `rgba(255,255,255,${Math.max(.6, 1 - dist / 200)})`;
-} else {
-el.style.color = 'rgba(255,255,255,.6)';
-}
-});
-});
-
-function animateRing() {
-ringX += (mouseX - ringX) * 0.12;
-ringY += (mouseY - ringY) * 0.12;
-cursorRing.style.left = (ringX - 16) + 'px';
-cursorRing.style.top = (ringY - 16) + 'px';
-requestAnimationFrame(animateRing);
-}
-animateRing();
-
-// Cursor hover effects
-document.querySelectorAll('a, button, .hamburger').forEach(el => {
-el.addEventListener('mouseenter', () => {
-cursorRing.style.width = '52px';
-cursorRing.style.height = '52px';
-cursorRing.style.borderColor = 'var(--gold)';
-cursorRing.style.opacity = '1';
-});
-el.addEventListener('mouseleave', () => {
-cursorRing.style.width = '32px';
-cursorRing.style.height = '32px';
-cursorRing.style.borderColor = 'var(--gold)';
-cursorRing.style.opacity = '.4';
-});
-});
-
-// Progress Bar
-const progress = document.getElementById('progress');
-window.addEventListener('scroll', () => {
-const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-const scrolled = (winScroll / height) * 100;
-progress.style.width = scrolled + '%';
-});
-
-// Navigation
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('nav-links');
-const links = document.querySelectorAll('.nav-link');
-
-hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-links.forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
-
-// Section Observer
-const sections = document.querySelectorAll('section');
-const observerOptions = {
-root: null,
-rootMargin: '-15% 0px -15% 0px',
-threshold: 0.1
-};
-
-const observer = new IntersectionObserver((entries) => {
-entries.forEach(e => {
-if (e.isIntersecting) {
-const id = e.target.getAttribute('id');
-links.forEach(l => l.classList.remove('active'));
-const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
-if (activeLink) activeLink.classList.add('active');
-
-const title = e.target.querySelector('.section-title');
-if (title) title.classList.add('in-view');
-}
-});
-}, observerOptions);
-
-sections.forEach(s => observer.observe(s));
-
-// Scroll-Reveal Observer
-const fadeObserver = new IntersectionObserver((entries) => {
-entries.forEach(e => {
-if (e.isIntersecting) {
-e.target.classList.add('visible');
-}
-});
-}, { threshold: 0.15 });
-
-document.querySelectorAll('.content-block, .hero-quote, .hero-text, .featured-card').forEach(el => {
-fadeObserver.observe(el);
-});
-</script>
+    // Kick home hero quote into view after load
+    window.addEventListener('load', () => {
+      const homeQuote = document.querySelector('#home .hero-quote');
+      if (homeQuote) homeQuote.classList.add('visible');
+    });
+  </script>
 </body>
 </html>
