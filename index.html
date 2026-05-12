@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pedro Costa Silva - Psychology Portfolio</title>
-  <!-- Display + mono fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --gold: #D4AF37;
       --white: #FFFFFF;
-      --black-1: #102547;
-      --black-2: #173568;
-      --black-3: #21447F;
-      --black-4: #2B5A9B;
+      /* lighter blue theme */
+      --black-1: #102547;   /* main background: deep but lighter blue */
+      --black-2: #173568;   /* mid blue */
+      --black-3: #21447F;   /* lighter surface */
+      --black-4: #2B5A9B;   /* lightest accent */
     }
 
     html {
@@ -37,10 +36,13 @@
       letter-spacing: 0.01em;
     }
 
-    /* Background layers */
+    /* Layered background with depth */
     .bg-layer {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
     }
@@ -65,7 +67,7 @@
       opacity: 0.8;
     }
 
-    /* Custom cursor */
+    /* Custom Cursor */
     .cursor-dot,
     .cursor-ring {
       position: fixed;
@@ -91,7 +93,7 @@
       transition: width .3s ease, height .3s ease, opacity .3s ease, border-color .3s ease;
     }
 
-    /* MINIMAL FULLSCREEN LOADER — FEDERICOPIAN STYLE */
+    /* Fullscreen intro loader */
     #page-loader {
       position: fixed;
       inset: 0;
@@ -99,8 +101,8 @@
         radial-gradient(circle at 20% 10%, var(--black-3) 0%, transparent 55%),
         radial-gradient(circle at 80% 90%, var(--black-4) 0%, transparent 60%),
         var(--black-1);
-      background-size: 180% 180%;
-      animation: loaderGradient 18s ease-in-out infinite alternate;
+      background-size: 160% 160%;
+      animation: loaderGradient 14s ease-in-out infinite alternate;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -115,74 +117,72 @@
     }
 
     .loader-inner {
-      width: min(900px, 92vw);
-      height: min(420px, 60vh);
-      display: grid;
-      grid-template-rows: 1fr auto;
-      grid-template-columns: 1fr;
-      padding: 2.5rem 2.5rem 2rem;
-      border-radius: 24px;
-      background: linear-gradient(
-        145deg,
-        rgba(7, 14, 40, 0.96),
-        rgba(10, 24, 60, 0.98)
-      );
-      border: 1px solid rgba(212,175,55,0.32);
-      box-shadow:
-        0 32px 110px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(255,255,255,0.02);
-      backdrop-filter: blur(18px);
-      transform-origin: center;
+      width: min(540px, 90vw);
+      padding-inline: 1rem;
     }
 
-    .loader-main-line {
-      align-self: center;
-      justify-self: flex-start;
-      text-align: left;
-    }
-
-    .loader-name {
-      font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-size: clamp(2.6rem, 6.5vw, 4rem);
-      font-weight: 700;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      line-height: 1.2;
-    }
-
-    .loader-sub {
-      margin-top: 0.6rem;
-      font-family: 'JetBrains Mono', Menlo, monospace;
-      font-size: 0.82rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      opacity: 0.75;
-    }
-
-    .loader-bottom {
-      align-self: flex-end;
+    .loader-top-line {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      font-family: 'JetBrains Mono', Menlo, monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      opacity: 0.82;
+      opacity: 0.7;
     }
 
     .loader-label {
-      opacity: 0.8;
+      opacity: 0.7;
     }
 
     .loader-percent {
       font-variant-numeric: tabular-nums;
     }
 
+    .loader-name {
+      font-size: clamp(2rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .loader-subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 2rem;
+    }
+
+    .loader-bar-track {
+      width: 100%;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      overflow: hidden;
+    }
+
+    .loader-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), #ffffff);
+      border-radius: inherit;
+      transform-origin: left center;
+      transition: width 0.09s linear;
+    }
+
     @keyframes loaderGradient {
-      0%   { background-position: 0% 0%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 100%; }
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 100%;
+      }
     }
 
     /* Scroll Progress Bar */
@@ -274,15 +274,16 @@
       transition: .3s;
     }
 
-    /* Main layout, rule-of-thirds-ish staging via padding */
+    /* Main Content */
     main {
       position: relative;
       z-index: 2;
     }
 
+    /* Section Styling */
     section {
       min-height: 100vh;
-      padding: 18vh 10vw 14vh;
+      padding: 15vh 10vw;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -320,6 +321,7 @@
       transform: translateY(0);
     }
 
+    /* Per-letter hover for section titles */
     .title-letters span {
       display: inline-block;
       color: var(--white);
@@ -341,6 +343,7 @@
     .title-letters span:nth-child(9) { transition-delay: 0.32s; }
     .title-letters span:nth-child(10) { transition-delay: 0.36s; }
 
+    /* Content Blocks */
     .content-block {
       margin-bottom: 12vh;
       opacity: 0;
@@ -387,12 +390,12 @@
       color: var(--gold);
     }
 
-    /* Home, centered in upper third */
+    /* Home Section */
     #home {
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding-top: 18vh;
+      padding-top: 20vh;
     }
 
     .hero-title {
@@ -438,10 +441,7 @@
       }
     }
 
-    /* Hero quote with golden shine */
     .hero-quote {
-      position: relative;
-      display: inline-block;
       font-size: clamp(1.1rem, 2vw, 1.4rem);
       color: rgba(255,255,255,0.9);
       max-width: 60ch;
@@ -451,7 +451,6 @@
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
-      overflow: hidden;
     }
 
     #home .hero-quote.visible {
@@ -459,32 +458,7 @@
       transform: translateY(0);
     }
 
-    .hero-quote::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -40%;
-      width: 40%;
-      height: 100%;
-      background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(212,175,55,0.0) 25%,
-        rgba(255,255,255,0.65) 50%,
-        rgba(212,175,55,0.0) 75%,
-        transparent 100%
-      );
-      transform: skewX(-20deg);
-      animation: quoteShine 4s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes quoteShine {
-      0%   { transform: translateX(-120%) skewX(-20deg); }
-      100% { transform: translateX(220%) skewX(-20deg); }
-    }
-
-    /* About */
+    /* About Section */
     #about .hero-text {
       font-size: clamp(1.1rem, 2vw, 1.5rem);
       color: rgba(255,255,255,1);
@@ -501,6 +475,7 @@
       transform: translateY(0);
     }
 
+    /* Featured Work Section */
     .featured-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -553,6 +528,7 @@
       border-color: var(--gold);
     }
 
+    /* Contact links */
     .contact-links {
       display: flex;
       gap: 4vw;
@@ -578,6 +554,7 @@
       transform: translateY(-5px);
     }
 
+    /* Responsive */
     @media (max-width: 768px) {
       nav {
         padding: 1.5rem 5vw;
@@ -608,7 +585,7 @@
       }
 
       section {
-        padding: 14vh 8vw 12vh;
+        padding: 12vh 8vw;
       }
 
       .featured-grid {
@@ -622,7 +599,7 @@
 
     @media (max-width: 480px) {
       section {
-        padding: 12vh 6vw 10vh;
+        padding: 10vh 6vw;
       }
 
       .content-block {
@@ -633,15 +610,6 @@
         margin-bottom: 6vh;
       }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-    }
   </style>
 </head>
 <body>
@@ -649,16 +617,17 @@
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
 
-  <!-- Minimal fullscreen loader -->
+  <!-- Intro loader -->
   <div id="page-loader">
     <div class="loader-inner">
-      <div class="loader-main-line">
-        <div class="loader-name">PEDRO COSTA SILVA</div>
-        <div class="loader-sub">Psychology · Statistics</div>
+      <div class="loader-top-line">
+        <span class="loader-label">Portfolio</span>
+        <span class="loader-percent" id="loader-percent">0%</span>
       </div>
-      <div class="loader-bottom">
-        <span class="loader-label">Portfolio loading</span>
-        <span class="loader-percent" id="loader-percent">000%</span>
+      <div class="loader-name">PEDRO COSTA SILVA</div>
+      <div class="loader-subtitle">Psychology &amp; Statistics</div>
+      <div class="loader-bar-track">
+        <div class="loader-bar-fill" id="loader-bar-fill"></div>
       </div>
     </div>
   </div>
@@ -800,7 +769,7 @@
       </div>
     </section>
 
-    <!-- PRESENTATIONS -->
+    <!-- PRESENTATIONS / PROJECT PAGE -->
     <section id="presentations">
       <h2 class="section-title title-letters">
         <span>P</span><span>r</span><span>o</span><span>j</span><span>e</span><span>c</span><span>t</span><span>&nbsp;</span>
@@ -884,11 +853,8 @@
     </section>
   </main>
 
-  <!-- GSAP for loader progress (simple) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
   <script>
-    // Custom cursor
+    // Custom Cursor
     const cursorDot = document.getElementById('cursor-dot');
     const cursorRing = document.getElementById('cursor-ring');
     let mouseX = 0, mouseY = 0;
@@ -910,6 +876,7 @@
     }
     animateRing();
 
+    // Cursor hover effects
     document.querySelectorAll('a, button, .hamburger').forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursorRing.style.width = '52px';
@@ -925,7 +892,7 @@
       });
     });
 
-    // Scroll progress bar
+    // Progress Bar
     const progress = document.getElementById('progress');
     window.addEventListener('scroll', () => {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -942,11 +909,11 @@
     hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
     links.forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
 
-    // Section observer (rule-of-thirds-ish timing)
+    // Section Observer (active nav + section title)
     const sections = document.querySelectorAll('section');
     const observerOptions = {
       root: null,
-      rootMargin: '-20% 0px -20% 0px',
+      rootMargin: '-15% 0px -15% 0px',
       threshold: 0.1
     };
 
@@ -955,7 +922,7 @@
         if (e.isIntersecting) {
           const id = e.target.getAttribute('id');
           links.forEach(l => l.classList.remove('active'));
-          const activeLink = document.querySelector(\`.nav-link[href="#\${id}"]\`);
+          const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
           if (activeLink) activeLink.classList.add('active');
 
           const title = e.target.querySelector('.section-title');
@@ -963,60 +930,57 @@
         }
       });
     }, observerOptions);
+
     sections.forEach(s => observer.observe(s));
 
-    // Scroll-reveal for blocks
+    // Scroll-Reveal Observer
     const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.18 });
+    }, { threshold: 0.15 });
 
     document.querySelectorAll('.content-block, .hero-quote, .hero-text, .featured-card').forEach((el, index) => {
       el.style.transitionDelay = (0.05 * index) + 's';
       fadeObserver.observe(el);
     });
 
-    // Minimal loader: 0 → 100% over ~3.5–4s, fade out
+    // Intro loader: 0–100% then fade out, then reveal hero quote
     window.addEventListener('load', () => {
+      const homeQuote = document.querySelector('#home .hero-quote');
       const loader = document.getElementById('page-loader');
-      const percentEl = document.getElementById('loader-percent');
-      const heroQuote = document.querySelector('#home .hero-quote');
+      const barFill = document.getElementById('loader-bar-fill');
+      const percentText = document.getElementById('loader-percent');
 
-      if (!loader || !percentEl) {
-        if (heroQuote) heroQuote.classList.add('visible');
+      if (!loader || !barFill || !percentText) {
+        if (homeQuote) homeQuote.classList.add('visible');
         return;
       }
 
-      const prefersReducedMotion = window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let progressVal = 0;
+      const duration = 2600; // total ms for 0–100
+      const step = 24;
+      const increment = 100 / (duration / step);
 
-      if (prefersReducedMotion) {
-        percentEl.textContent = '100%';
-        loader.classList.add('hidden');
-        if (heroQuote) heroQuote.classList.add('visible');
-        return;
-      }
+      const intervalId = setInterval(() => {
+        progressVal += increment;
 
-      gsap.fromTo(
-        { p: 0 },
-        {
-          p: 100,
-          duration: 3.6,
-          ease: 'power2.out',
-          onUpdate: function() {
-            const val = Math.round(this.targets()[0].p);
-            const padded = String(val).padStart(3, '0');
-            percentEl.textContent = padded + '%';
-          },
-          onComplete: () => {
+        if (progressVal >= 100) {
+          progressVal = 100;
+          clearInterval(intervalId);
+
+          setTimeout(() => {
             loader.classList.add('hidden');
-            if (heroQuote) heroQuote.classList.add('visible');
-          }
+            if (homeQuote) homeQuote.classList.add('visible');
+          }, 500);
         }
-      );
+
+        const rounded = Math.round(progressVal);
+        barFill.style.width = rounded + '%';
+        percentText.textContent = rounded + '%';
+      }, step);
     });
   </script>
 </body>
