@@ -343,7 +343,7 @@
       font-size: clamp(1.1rem, 2vw, 1.4rem);
       max-width: 60ch;
       margin: 0 auto;
-      font-style: times new roman;
+      font-style: italic;
       line-height: 1.8;
       opacity: 0;
       transform: translateY(10px);
@@ -352,7 +352,7 @@
 
     .hero-subtitle.visible,
     .hero-quote.visible {
-      opacity: 3;
+      opacity: 5;
       transform: translateY(0);
     }
 
@@ -360,9 +360,9 @@
       display: inline-block;
       background: linear-gradient(
         120deg,
-        rgba(255,255,255,0.90),
+        rgba(255,255,255,0.120),
         var(--gold),
-        rgba(255,255,255,0.90)
+        rgba(255,255,255,0.120)
       );
       background-size: 200% 100%;
       -webkit-background-clip: text;
@@ -372,7 +372,7 @@
     }
 
     .hero-quote span:nth-child(odd) { animation-delay: 0.12s; }
-    .hero-quote span:nth-child(3n)  { animation-delay: 0.36s; }
+    .hero-quote span:nth-child(3n)  { animation-delay: 0.47s; }
 
     @keyframes quoteLetterPulse {
       0%, 100% {
