@@ -169,26 +169,17 @@
       100% { background-position: 0% 100%; }
     }
 
-    @keyframes loaderNetflixOut {
-      0% {
-        transform: scale(1);
+    @keyframes loaderFadeOut {
+      from {
         opacity: 1;
-        filter: brightness(1);
       }
-      40% {
-        transform: scale(1.03);
-        opacity: 1;
-        filter: brightness(1.4);
-      }
-      100% {
-        transform: scale(1.1);
+      to {
         opacity: 0;
-        filter: brightness(0.9);
       }
     }
 
     #page-loader.exiting {
-      animation: loaderNetflixOut 0.8s ease forwards;
+      animation: loaderFadeOut 0.8s ease forwards;
     }
 
     .progress-bar {
@@ -393,21 +384,42 @@
       color: var(--white);
       margin-bottom: 3vh;
       letter-spacing: -0.06em;
-      opacity: 0;
-      animation: glitchFadeIn 1.5s ease forwards;
       text-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      opacity: 0;
+      transition: opacity 1s ease;
     }
 
-    @keyframes glitchFadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .hero-title.visible {
+      opacity: 1;
     }
+
+    .hero-title .letter {
+      display: inline-block;
+      transition: transform 0.22s ease, color 0.22s ease;
+      will-change: transform;
+    }
+
+    .hero-title:hover .letter {
+      color: var(--gold);
+    }
+
+    .hero-title:hover .letter:nth-child(1)  { transform: translateY(-8px);  transition-delay: 0s; }
+    .hero-title:hover .letter:nth-child(2)  { transform: translateY(-5px);  transition-delay: 0.02s; }
+    .hero-title:hover .letter:nth-child(3)  { transform: translateY(-9px);  transition-delay: 0.04s; }
+    .hero-title:hover .letter:nth-child(4)  { transform: translateY(-6px);  transition-delay: 0.06s; }
+    .hero-title:hover .letter:nth-child(5)  { transform: translateY(-10px); transition-delay: 0.08s; }
+    .hero-title:hover .letter:nth-child(6)  { transform: translateY(-6px);  transition-delay: 0.10s; }
+    .hero-title:hover .letter:nth-child(7)  { transform: translateY(-8px);  transition-delay: 0.12s; }
+    .hero-title:hover .letter:nth-child(8)  { transform: translateY(-4px);  transition-delay: 0.14s; }
+    .hero-title:hover .letter:nth-child(9)  { transform: translateY(-9px);  transition-delay: 0.16s; }
+    .hero-title:hover .letter:nth-child(10) { transform: translateY(-5px);  transition-delay: 0.18s; }
+    .hero-title:hover .letter:nth-child(11) { transform: translateY(-8px);  transition-delay: 0.20s; }
+    .hero-title:hover .letter:nth-child(12) { transform: translateY(-4px);  transition-delay: 0.22s; }
+    .hero-title:hover .letter:nth-child(13) { transform: translateY(-9px);  transition-delay: 0.24s; }
+    .hero-title:hover .letter:nth-child(14) { transform: translateY(-5px);  transition-delay: 0.26s; }
+    .hero-title:hover .letter:nth-child(15) { transform: translateY(-10px); transition-delay: 0.28s; }
+    .hero-title:hover .letter:nth-child(16) { transform: translateY(-6px);  transition-delay: 0.30s; }
+    .hero-title:hover .letter:nth-child(17) { transform: translateY(-8px);  transition-delay: 0.32s; }
 
     .hero-subtitle {
       font-size: clamp(1.2rem, 2.5vw, 1.8rem);
@@ -645,6 +657,27 @@
         bottom: 10vh;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .hero-title,
+      .hero-subtitle,
+      .hero-quote,
+      .content-block,
+      .featured-card,
+      .hero-text {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -690,8 +723,16 @@
 
   <main>
     <section id="home">
-      <h1 class="hero-title">PEDRO COSTA SILVA</h1>
+      <h1 class="hero-title" id="hero-title" aria-label="Pedro Costa Silva">
+        <span class="letter">P</span><span class="letter">E</span><span class="letter">D</span><span class="letter">R</span><span class="letter">O</span>
+        <span class="letter">&nbsp;</span>
+        <span class="letter">C</span><span class="letter">O</span><span class="letter">S</span><span class="letter">T</span><span class="letter">A</span>
+        <span class="letter">&nbsp;</span>
+        <span class="letter">S</span><span class="letter">I</span><span class="letter">L</span><span class="letter">V</span><span class="letter">A</span>
+      </h1>
+
       <p class="hero-subtitle">Psychology &amp; Statistics</p>
+
       <p class="hero-quote">
         <span>N</span><span>o</span><span>t</span><span>h</span><span>i</span><span>n</span><span>g</span><span>&nbsp;</span>
         <span>i</span><span>n</span><span>&nbsp;</span>
@@ -983,6 +1024,7 @@
     });
 
     window.addEventListener('load', () => {
+      const heroTitle = document.getElementById('hero-title');
       const homeQuote = document.querySelector('.hero-quote');
       const homeSubtitle = document.querySelector('.hero-subtitle');
       const loader = document.getElementById('page-loader');
@@ -990,6 +1032,7 @@
       const circleProgress = document.getElementById('loader-circle-progress');
 
       if (!loader || !percentText || !circleProgress) {
+        if (heroTitle) heroTitle.classList.add('visible');
         if (homeSubtitle) homeSubtitle.classList.add('visible');
         if (homeQuote) homeQuote.classList.add('visible');
         return;
@@ -1012,6 +1055,8 @@
 
             setTimeout(() => {
               loader.classList.add('hidden');
+
+              if (heroTitle) heroTitle.classList.add('visible');
 
               setTimeout(() => {
                 if (homeSubtitle) homeSubtitle.classList.add('visible');
