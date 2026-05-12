@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedro Costa Silva - Psychology Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-
+  <!-- Display font for name + loader intro -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --gold: #D4AF37;
       --white: #FFFFFF;
-      --black-1: #102547;
-      --black-2: #173568;
-      --black-3: #21447F;
-      --black-4: #2B5A9B;
+      /* lighter blue theme */
+      --black-1: #102547;   /* main background: deep but lighter blue */
+      --black-2: #173568;   /* mid blue */
+      --black-3: #21447F;   /* lighter surface */
+      --black-4: #2B5A9B;   /* lightest accent */
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     * {
       margin: 0;
@@ -37,6 +36,7 @@
       letter-spacing: 0.01em;
     }
 
+    /* Layered background with depth */
     .bg-layer {
       position: fixed;
       top: 0;
@@ -67,6 +67,7 @@
       opacity: 0.8;
     }
 
+    /* Custom Cursor */
     .cursor-dot,
     .cursor-ring {
       position: fixed;
@@ -92,6 +93,7 @@
       transition: width .3s ease, height .3s ease, opacity .3s ease, border-color .3s ease;
     }
 
+    /* FULLSCREEN INTRO LOADER – MINIMAL CIRCLE BOTTOM LEFT */
     #page-loader {
       position: fixed;
       inset: 0;
@@ -143,9 +145,12 @@
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      background: conic-gradient(var(--white) 0deg, var(--white) 0deg, transparent 0deg);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
-      mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
+      background:
+        conic-gradient(var(--white) 0deg, var(--white) 0deg, transparent 0deg);
+      -webkit-mask:
+        radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
+      mask:
+        radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
     }
 
     .loader-percent {
@@ -164,11 +169,12 @@
     }
 
     @keyframes loaderGradient {
-      0% { background-position: 0% 0%; }
-      50% { background-position: 100% 50%; }
+      0%   { background-position: 0% 0%; }
+      50%  { background-position: 100% 50%; }
       100% { background-position: 0% 100%; }
     }
 
+    /* Netflix‑ish exit animation */
     @keyframes loaderNetflixOut {
       0% {
         transform: scale(1);
@@ -191,6 +197,7 @@
       animation: loaderNetflixOut 0.8s ease forwards;
     }
 
+    /* Scroll Progress Bar */
     .progress-bar {
       position: fixed;
       top: 0;
@@ -202,6 +209,7 @@
       transition: width 0.1s ease;
     }
 
+    /* Navigation */
     nav {
       position: fixed;
       top: 0;
@@ -278,11 +286,13 @@
       transition: .3s;
     }
 
+    /* Main Content */
     main {
       position: relative;
       z-index: 2;
     }
 
+    /* Section Styling */
     section {
       min-height: 100vh;
       padding: 15vh 10vw;
@@ -303,6 +313,7 @@
       position: relative;
     }
 
+    /* Animated divider under section titles */
     .section-title::after {
       content: '';
       position: absolute;
@@ -323,6 +334,7 @@
       transform: translateY(0);
     }
 
+    /* Per-letter hover for section titles */
     .title-letters span {
       display: inline-block;
       color: var(--white);
@@ -333,6 +345,18 @@
       color: rgba(212,175,55,0.8);
     }
 
+    .title-letters span:nth-child(1) { transition-delay: 0.00s; }
+    .title-letters span:nth-child(2) { transition-delay: 0.04s; }
+    .title-letters span:nth-child(3) { transition-delay: 0.08s; }
+    .title-letters span:nth-child(4) { transition-delay: 0.12s; }
+    .title-letters span:nth-child(5) { transition-delay: 0.16s; }
+    .title-letters span:nth-child(6) { transition-delay: 0.20s; }
+    .title-letters span:nth-child(7) { transition-delay: 0.24s; }
+    .title-letters span:nth-child(8) { transition-delay: 0.28s; }
+    .title-letters span:nth-child(9) { transition-delay: 0.32s; }
+    .title-letters span:nth-child(10) { transition-delay: 0.36s; }
+
+    /* Content Blocks */
     .content-block {
       margin-bottom: 12vh;
       opacity: 0;
@@ -379,6 +403,7 @@
       color: var(--gold);
     }
 
+    /* Home Section */
     #home {
       justify-content: center;
       align-items: center;
@@ -399,14 +424,8 @@
     }
 
     @keyframes glitchFadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     .hero-subtitle {
@@ -420,6 +439,7 @@
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
 
+    /* Hero quote with subtle per-letter golden pulse */
     .hero-quote {
       position: relative;
       display: inline-block;
@@ -454,13 +474,8 @@
       animation: quoteLetterPulse 2.4s ease-in-out infinite;
     }
 
-    .hero-quote span:nth-child(odd) {
-      animation-delay: 0.08s;
-    }
-
-    .hero-quote span:nth-child(3n) {
-      animation-delay: 0.16s;
-    }
+    .hero-quote span:nth-child(odd) { animation-delay: 0.08s; }
+    .hero-quote span:nth-child(3n)  { animation-delay: 0.16s; }
 
     @keyframes quoteLetterPulse {
       0%, 100% {
@@ -473,6 +488,7 @@
       }
     }
 
+    /* About Section */
     #about .hero-text {
       font-size: clamp(1.1rem, 2vw, 1.5rem);
       color: rgba(255,255,255,1);
@@ -489,6 +505,7 @@
       transform: translateY(0);
     }
 
+    /* Sections are visible; inner blocks handle scroll animation */
     #about,
     #philosophy,
     #coursework,
@@ -498,6 +515,7 @@
       transform: translateY(0);
     }
 
+    /* Featured Work Section */
     .featured-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -550,6 +568,7 @@
       border-color: var(--gold);
     }
 
+    /* Contact links */
     .contact-links {
       display: flex;
       gap: 4vw;
@@ -575,19 +594,9 @@
       transform: translateY(-5px);
     }
 
-    .hover-letters {
-      transition: color 0.3s ease, letter-spacing 0.3s ease;
-    }
-
-    .hover-letters:hover {
-      color: var(--gold);
-      letter-spacing: 0.02em;
-    }
-
+    /* Responsive */
     @media (max-width: 768px) {
-      nav {
-        padding: 1.5rem 5vw;
-      }
+      nav { padding: 1.5rem 5vw; }
 
       .nav-links {
         position: fixed;
@@ -604,40 +613,26 @@
         backdrop-filter: blur(20px);
       }
 
-      .nav-links.open {
-        left: 0;
-      }
+      .nav-links.open { left: 0; }
 
       .hamburger {
         display: flex;
         z-index: 1001;
       }
 
-      section {
-        padding: 12vh 8vw;
-      }
+      section { padding: 12vh 8vw; }
 
-      .featured-grid {
-        grid-template-columns: 1fr;
-      }
+      .featured-grid { grid-template-columns: 1fr; }
 
-      .hero-title {
-        letter-spacing: -1px;
-      }
+      .hero-title { letter-spacing: -1px; }
     }
 
     @media (max-width: 480px) {
-      section {
-        padding: 10vh 6vw;
-      }
+      section { padding: 10vh 6vw; }
 
-      .content-block {
-        margin-bottom: 8vh;
-      }
+      .content-block { margin-bottom: 8vh; }
 
-      .section-title {
-        margin-bottom: 6vh;
-      }
+      .section-title { margin-bottom: 6vh; }
 
       .loader-circle-wrap {
         left: 50%;
@@ -652,6 +647,7 @@
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
 
+  <!-- Minimal circle-style intro loader -->
   <div id="page-loader">
     <div class="loader-layout">
       <div class="loader-circle-wrap">
@@ -689,6 +685,7 @@
   </nav>
 
   <main>
+    <!-- HOME -->
     <section id="home">
       <h1 class="hero-title">PEDRO COSTA SILVA</h1>
       <p class="hero-subtitle">Psychology &amp; Statistics</p>
@@ -709,11 +706,11 @@
       </p>
     </section>
 
+    <!-- ABOUT -->
     <section id="about">
       <h2 class="section-title title-letters">
         <span>A</span><span>b</span><span>o</span><span>u</span><span>t</span><span>&nbsp;</span><span>m</span><span>e</span>
       </h2>
-
       <p class="hero-text">
         Hello, my name is Pedro Costa Silva, it's nice to have you on my website! I created this space as an assignment for my Statistics class in my last year of college. I'm a senior majoring in Psychology, a subject for which I'm deeply passionate. I love cooking, playing soccer (I'm Brazilian), learning... I also love thinking deeply about what it means to be human.
       </p>
@@ -736,6 +733,7 @@
       </div>
     </section>
 
+    <!-- PHILOSOPHY -->
     <section id="philosophy">
       <h2 class="section-title title-letters">
         <span>W</span><span>h</span><span>a</span><span>t</span><span>&nbsp;</span>
@@ -766,45 +764,46 @@
       </div>
     </section>
 
+    <!-- COURSEWORK -->
     <section id="coursework">
       <h2 class="section-title title-letters">
         <span>C</span><span>o</span><span>u</span><span>r</span><span>s</span><span>e</span><span>w</span><span>o</span><span>r</span><span>k</span>
       </h2>
 
       <div class="content-block">
-        <h3 class="hover-letters">Projects &amp; Assignments (Psychology of Personality — Psy 301)</h3>
+        <h3> class="hover-letters">Projects &amp;class="hover-letters">Assignments (Psychology of Personality — Psy 301)</h3>
         <p>
-          <strong class="hover-letters">Personality Project.</strong> For this project in Psychology of Personality, I designed and attempted a six-week behavioral intervention aimed at increasing my conscientiousness, which initially tested at about the 4th percentile on the Big Five inventory. I created a system of weekly challenges focused on academic follow-through: attending every class I could, arriving on time with materials, and handwriting 100–150 word mini-reflections within six hours after each class. My plan was rooted in current personality-change research done by Hudson et al. (2019), who suggested that meaningful trait change depends on consistently enacting trait-relevant behaviors over time (not just willpower).
+          <strong>class="hover-letters">Personality Project.</strong> For this project in Psychology of Personality, I designed and attempted a six-week behavioral intervention aimed at increasing my conscientiousness, which initially tested at about the 4th percentile on the Big Five inventory. I created a system of weekly challenges focused on academic follow-through: attending every class I could, arriving on time with materials, and handwriting 100–150 word mini-reflections within six hours after each class. My plan was rooted in current personality-change research done by Hudson et al. (2019), who suggested that meaningful trait change depends on consistently enacting trait-relevant behaviors over time (not just willpower).
         </p>
       </div>
 
       <div class="content-block">
-        <h3 class="hover-letters">Factor Analysis</h3>
+        <h3>class="hover-letters">Factor Analysis</h3>
         <p>
           In this project, I was challenged to use an exploratory factor analysis to see whether a short personality survey would recover the classic Big Five traits from item-level data. I ran a Maximum Likelihood factor analysis with Promax rotation, suppressing loadings below .30 to focus on the strongest relationships between items and factors. The analysis showed a five-factor solution that closely approximated Extraversion, Agreeableness, Conscientiousness, Neuroticism, and Openness to Experience. I learned that abstract traits can emerge from concrete self-descriptions.
         </p>
       </div>
 
       <div class="content-block">
-        <h3 class="hover-letters">Jamovi Projects (Statistics — Psy 309)</h3>
+        <h3>class="hover-letters">Jamovi Projects (Statistics — Psy 309)</h3>
         <p>
-          <strong class="hover-letters">Project 1: Data exploration and descriptive statistics.</strong> I learned about the importance of visualizing data and summarizing it through measures of central tendency. For example, I reported on MLU (Mean Length of Utterance) for 20 patients and described the distribution in terms of mean, SD, range, and modal values.
+          <strong>class="hover-letters">Project 1: Data exploration and descriptive statistics.</strong> I learned about the importance of visualizing data and summarizing it through measures of central tendency. For example, I reported on MLU (Mean Length of Utterance) for 20 patients and described the distribution in terms of mean, SD, range, and modal values.
         </p>
         <p>
-          <strong class="hover-letters">Project 2: t-tests.</strong> I explored how inferential statistics can be used to make claims about the unknown. Using a one-sample t test, I compared a sample mean test score to a population mean and interpreted the significance of the difference when an outlier was included.
+          <strong>class="hover-letters">Project 2: t-tests.</strong> I explored how inferential statistics can be used to make claims about the unknown. Using a one-sample t test, I compared a sample mean test score to a population mean and interpreted the significance of the difference when an outlier was included.
         </p>
         <p>
-          <strong class="hover-letters">Project 3: ANOVA.</strong> I learned why controlling variability within groups is crucial when comparing them. A one-way ANOVA tested the effect of teaching method on reading comprehension, checking assumptions like homogeneity of variance and interpreting post-hoc tests.
+          <strong>class="hover-letters">Project 3: ANOVA.</strong> I learned why controlling variability within groups is crucial when comparing them. A one-way ANOVA tested the effect of teaching method on reading comprehension, checking assumptions like homogeneity of variance and interpreting post-hoc tests.
         </p>
         <p>
-          <strong class="hover-letters">Project 4: Correlation &amp; Regression.</strong> I engaged deeply with the idea that “correlation is not causation.” I used Pearson correlation and simple linear regression to test relationships between medication dosage and heart rate, interpreting effect sizes, p-values, and explained variance.
+          <strong>class="hover-letters">Project 4: Correlation &amp; Regression.</strong> I engaged deeply with the idea that “correlation is not causation.” I used Pearson correlation and simple linear regression to test relationships between medication dosage and heart rate, interpreting effect sizes, p-values, and explained variance.
         </p>
       </div>
 
       <div class="content-block">
-        <h3 class="hover-letters">Chi-Square &amp; Mindmap</h3>
+        <h3>class="hover-letters">Chi-Square &amp; Mindmap</h3>
         <p>
-          <strong class="hover-letters">Chi Square Method of Hypothesis.</strong> I used chi-square to examine how two categorical variables relate, framing it around soccer and nationality. I found that being Brazilian vs. American was statistically associated with soccer skill, illustrating how categorical relationships can be tested.
+          <strong>Chi Square Method of Hypothesis.</strong> I used chi-square to examine how two categorical variables relate, framing it around soccer and nationality. I found that being Brazilian vs. American was statistically associated with soccer skill, illustrating how categorical relationships can be tested.
         </p>
         <p>
           I also built a mind map for the whole Statistics course, connecting how descriptive statistics support prediction and inference. It helped me visualize how the pieces of the course fit together into a coherent framework.
@@ -812,6 +811,7 @@
       </div>
     </section>
 
+    <!-- PRESENTATIONS / PROJECT PAGE -->
     <section id="presentations">
       <h2 class="section-title title-letters">
         <span>P</span><span>r</span><span>o</span><span>j</span><span>e</span><span>c</span><span>t</span><span>&nbsp;</span>
@@ -825,7 +825,7 @@
             Corny name aside, this is one of my favorite projects. The overall concept of behavioral motivation is one that I must admit was the reason I picked psychology as a major. I'm intrigued by ultra-athletes and understanding what separates them mentally from everyone else. That is what this project was all about.
           </p>
           <p>
-            <a href="https://docs.google.com/presentation/d/1CfvkLcQ0e7zuUblPVAjDo1tfJqkQ0Xt40YTab7naOOQ/present" target="_blank" rel="noopener noreferrer">
+            <a href="https://docs.google.com/presentation/d/1CfvkLcQ0e7zuUblPVAjDo1tfJqkQ0Xt40YTab7naOOQ/present" target="_blank">
               Open Presentation →
             </a>
           </p>
@@ -833,20 +833,21 @@
       </div>
     </section>
 
+    <!-- REFLECTIONS -->
     <section id="reflections">
       <h2 class="section-title title-letters">
         <span>R</span><span>e</span><span>f</span><span>l</span><span>e</span><span>c</span><span>t</span><span>i</span><span>o</span><span>n</span><span>s</span>
       </h2>
 
       <div class="content-block">
-        <h3 class="hover-letters">Writing Sample I'm Most Proud Of (Personality)</h3>
+        <h3>class="hover-letters">Writing Sample I'm Most Proud Of (Personality)</h3>
         <p>
           “The constructs we hold fundamentally shift how we experience ourselves and others around us. In a compensatory reflex toward self protection (what can also be called the EGO) we merge ourselves with extremes; even if the behavior is counterproductive. The major takeaway for me is that in order to become a more loving being, we ought to practice thinking of constructs (people, circumstances) in a continuous spectrum rather than in opposite, fixed states (Good, bad; Fair, unfair). In this way, I believe we ought to optimize our environments so that they can produce in us heuristics that yield positive results at the micro level (interpersonally) and the macro level (society as a whole).”
         </p>
       </div>
 
       <div class="content-block">
-        <h3 class="hover-letters">Expectations vs. Reality (Personality)</h3>
+        <h3>class="hover-letters">Expectations vs. Reality (Personality)</h3>
         <p>
           Frankly speaking, I did not expect much from it, as I had already taken a different version with a different professor before. I expected it to be fairly familiar conceptually, but I couldn't have been more wrong. Dr. Xeriland introduced various concepts borrowed from <em>Physics</em> in order for us to have a framework to understand personality (such as Chaos Theory). It was a bit stumping at first, but as I got accustomed to the different definitions, it allowed me to look at human personality through a lens I had never seen before.
         </p>
@@ -859,7 +860,7 @@
       </div>
 
       <div class="content-block">
-        <h3 class="hover-letters">Final Remarks (Personality)</h3>
+        <h3>class="hover-letters">Final Remarks (Personality)</h3>
         <p>
           One of the core advantages of studying personality is that being exposed to different ways of framing human behavior carries an inherent lesson on humility and compassion.
         </p>
@@ -872,14 +873,14 @@
       </div>
 
       <div class="content-block">
-        <h3 class="hover-letters">Expectation vs Reality (Statistics)</h3>
+        <h3>class="hover-letters">Expectation vs Reality (Statistics)</h3>
         <p>
           My expectations coming into the class were that I'd be taught theorems and formulas all over again (I have taken this class and failed before), the same old same old. But what I actually got was an instructor who was committed to teaching the fundamental concepts of Statistics, not that we just memorize information and move along without learning anything. Having such commitment displayed in the classroom was by far the most satisfying part of the course. The most challenging part of it was the homework.
         </p>
       </div>
 
       <div class="content-block">
-        <h3 class="hover-letters">How my Mind was Changed (Statistics)</h3>
+        <h3>class="hover-letters">How my Mind was Changed (Statistics)</h3>
         <p>
           My view of Statistics in the beginning of the semester had been that it is an amazing tool for finding out the “truth”. When I shared that thought to Dr. Xeriland, he quickly shut down the idea. He explained how you can never truly know the full picture, and that's why we have stats in the first place. So I've changed my mind to say that Stats is an excellent tool to achieve the most optimal level of clarity and accuracy when facing uncertainty about something bigger than what you can grasp.
         </p>
@@ -895,6 +896,7 @@
   </main>
 
   <script>
+    // Custom Cursor
     const cursorDot = document.getElementById('cursor-dot');
     const cursorRing = document.getElementById('cursor-ring');
     let mouseX = 0, mouseY = 0;
@@ -916,6 +918,7 @@
     }
     animateRing();
 
+    // Cursor hover effects
     document.querySelectorAll('a, button, .hamburger').forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursorRing.style.width = '52px';
@@ -931,6 +934,7 @@
       });
     });
 
+    // Progress Bar
     const progress = document.getElementById('progress');
     window.addEventListener('scroll', () => {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -939,6 +943,7 @@
       progress.style.width = scrolled + '%';
     });
 
+    // Navigation
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
     const links = document.querySelectorAll('.nav-link');
@@ -946,6 +951,7 @@
     hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
     links.forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
 
+    // Section Observer (active nav + section title)
     const sections = document.querySelectorAll('section');
     const observerOptions = {
       root: null,
@@ -969,6 +975,7 @@
 
     sections.forEach(s => observer.observe(s));
 
+    // Scroll-Reveal Observer for inner blocks
     const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -982,6 +989,7 @@
       fadeObserver.observe(el);
     });
 
+    // Circle loader: 0–100% then Netflix‑style exit, then staged reveal
     window.addEventListener('load', () => {
       const homeQuote = document.querySelector('.hero-quote');
       const homeSubtitle = document.querySelector('.hero-subtitle');
@@ -996,7 +1004,7 @@
       }
 
       let progressVal = 0;
-      const duration = 3200;
+      const duration = 3200; // ms
       const step = 32;
       const increment = 100 / (duration / step);
 
@@ -1013,11 +1021,12 @@
             setTimeout(() => {
               loader.classList.add('hidden');
 
+              // 350ms pause: only name visible
               setTimeout(() => {
                 if (homeSubtitle) homeSubtitle.classList.add('visible');
                 if (homeQuote) homeQuote.classList.add('visible');
               }, 350);
-            }, 800);
+            }, 800); // match loaderNetflixOut
           }, 300);
         }
 
