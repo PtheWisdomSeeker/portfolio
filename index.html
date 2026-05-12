@@ -16,9 +16,9 @@
     }
 
     html {
-  scroll-behavior: smooth;
+      scroll-behavior: smooth;
+    }
 
-    
     * {
       margin: 0;
       padding: 0;
@@ -68,7 +68,8 @@
     }
 
     /* Custom Cursor */
-    .cursor-dot, .cursor-ring {
+    .cursor-dot,
+    .cursor-ring {
       position: fixed;
       pointer-events: none;
       z-index: 10000;
@@ -83,7 +84,7 @@
       opacity: 1;
     }
 
-        .cursor-ring {
+    .cursor-ring {
       width: 32px;
       height: 32px;
       border: 1px solid var(--gold);
@@ -92,7 +93,7 @@
       transition: width .3s ease, height .3s ease, opacity .3s ease, border-color .3s ease;
     }
 
-    /* Fullscreen intro loader with site colors (NEW) */
+    /* Fullscreen intro loader with site colors + subtle animation */
     #page-loader {
       position: fixed;
       inset: 0;
@@ -100,6 +101,8 @@
         radial-gradient(circle at 20% 10%, var(--black-3) 0%, transparent 55%),
         radial-gradient(circle at 80% 90%, var(--black-4) 0%, transparent 60%),
         var(--black-1);
+      background-size: 160% 160%;
+      animation: loaderGradient 14s ease-in-out infinite alternate;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -170,10 +173,21 @@
       transition: width 0.09s linear;
     }
 
+    @keyframes loaderGradient {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 100%;
+      }
+    }
+
     /* Scroll Progress Bar */
     .progress-bar {
       position: fixed;
-      ...
       top: 0;
       left: 0;
       height: 2px;
@@ -184,35 +198,35 @@
     }
 
     /* Navigation */
-   nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding: 2rem 5vw;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-  background: linear-gradient(180deg, rgba(5,5,5,0.8) 0%, transparent 100%);
-}
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 2rem 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(5,5,5,0.8) 0%, transparent 100%);
+    }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: 2px;
-  white-space: nowrap;   /* NEW: keep on one line */
-  flex-shrink: 0;        /* NEW: don’t let flexbox squeeze it */
-}
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
 
-.nav-links {
-  display: flex;
-  gap: 3rem;
-  list-style: none;
-  flex: 1 1 auto;     /* NEW: let this be the flexible part */
-  justify-content: flex-end;
-}
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+      flex: 1 1 auto;
+      justify-content: flex-end;
+    }
 
     .nav-link {
       position: relative;
@@ -225,21 +239,21 @@
       font-weight: 500;
     }
 
-      .nav-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--gold), rgba(212,175,55,0.1));
-  transition: width 0.25s ease;
-}
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), rgba(212,175,55,0.1));
+      transition: width 0.25s ease;
+    }
 
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 100%;
-}
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
 
     .nav-link:hover,
     .nav-link.active {
@@ -284,9 +298,6 @@
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    
-    .section-title {
       position: relative;
     }
 
@@ -396,8 +407,7 @@
       letter-spacing: -0.06em;
       opacity: 0;
       animation: glitchFadeIn 1.5s ease forwards;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.35); /* NEW */
-}
+      text-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
 
     @keyframes glitchFadeIn {
@@ -608,7 +618,7 @@
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
 
-  <!-- Intro loader (NEW) -->
+  <!-- Intro loader -->
   <div id="page-loader">
     <div class="loader-inner">
       <div class="loader-top-line">
@@ -630,7 +640,6 @@
 
   <nav>
     <div class="logo">PEDRO COSTA SILVA</div>
-    ...
     <ul class="nav-links" id="nav-links">
       <li><a href="#home" class="nav-link active">Home</a></li>
       <li><a href="#about" class="nav-link">About</a></li>
@@ -650,7 +659,7 @@
     <!-- HOME -->
     <section id="home">
       <h1 class="hero-title">PEDRO COSTA SILVA</h1>
-      <p class="hero-subtitle">Psychology & Statistics</p>
+      <p class="hero-subtitle">Psychology &amp; Statistics</p>
       <p class="hero-quote">
         "Nothing in life is to be feared, it is only to be understood."
       </p>
@@ -694,7 +703,7 @@
       </h2>
 
       <div class="content-block">
-        <h3>Learning & Growth</h3>
+        <h3>Learning &amp; Growth</h3>
         <p>
           <strong>Learning is about <em>growth</em></strong>. It is about destroying one's fundamental constructs about the world and rebuilding them back with stronger foundations, incessantly. It is to do what you can to remain intellectually honest, even when your <em>ego</em> does not want to. It requires a mindset of growth over scarcity—and it inherently carries a lesson worth taking anywhere: Vulnerability is a strength that gets you to where you want to be.
         </p>
@@ -704,7 +713,7 @@
       </div>
 
       <div class="content-block">
-        <h3>Statistics & Personality</h3>
+        <h3>Statistics &amp; Personality</h3>
         <p>
           Statistics, like any other discipline, equips an individual with a better heuristic than the one they were born with. Specifically, it involves various skills including (but not limited to): Critical Thinking, Interpretation of data, Working with uncertainty (which helps if you don't want to be driven by emotions). In addition, a framework for understanding human personality is fundamental to understand the microcosm of the self.
         </p>
@@ -721,7 +730,7 @@
       </h2>
 
       <div class="content-block">
-        <h3>Projects & Assignments (Psychology of Personality — Psy 301)</h3>
+        <h3>Projects &amp; Assignments (Psychology of Personality — Psy 301)</h3>
         <p>
           <strong>Personality Project.</strong> For this project in Psychology of Personality, I designed and attempted a six-week behavioral intervention aimed at increasing my conscientiousness, which initially tested at about the 4th percentile on the Big Five inventory. I created a system of weekly challenges focused on academic follow-through: attending every class I could, arriving on time with materials, and handwriting 100–150 word mini-reflections within six hours after each class. My plan was rooted in current personality-change research done by Hudson et al. (2019), who suggested that meaningful trait change depends on consistently enacting trait-relevant behaviors over time (not just willpower).
         </p>
@@ -746,12 +755,12 @@
           <strong>Project 3: ANOVA.</strong> I learned why controlling variability within groups is crucial when comparing them. A one-way ANOVA tested the effect of teaching method on reading comprehension, checking assumptions like homogeneity of variance and interpreting post-hoc tests.
         </p>
         <p>
-          <strong>Project 4: Correlation & Regression.</strong> I engaged deeply with the idea that “correlation is not causation.” I used Pearson correlation and simple linear regression to test relationships between medication dosage and heart rate, interpreting effect sizes, p-values, and explained variance.
+          <strong>Project 4: Correlation &amp; Regression.</strong> I engaged deeply with the idea that “correlation is not causation.” I used Pearson correlation and simple linear regression to test relationships between medication dosage and heart rate, interpreting effect sizes, p-values, and explained variance.
         </p>
       </div>
 
       <div class="content-block">
-        <h3>Chi-Square & Mindmap</h3>
+        <h3>Chi-Square &amp; Mindmap</h3>
         <p>
           <strong>Chi Square Method of Hypothesis.</strong> I used chi-square to examine how two categorical variables relate, framing it around soccer and nationality. I found that being Brazilian vs. American was statistically associated with soccer skill, illustrating how categorical relationships can be tested.
         </p>
@@ -935,25 +944,24 @@
     }, { threshold: 0.15 });
 
     document.querySelectorAll('.content-block, .hero-quote, .hero-text, .featured-card').forEach((el, index) => {
-  el.style.transitionDelay = (0.05 * index) + 's';  // NEW line
-  fadeObserver.observe(el);
-});
+      el.style.transitionDelay = (0.05 * index) + 's';
+      fadeObserver.observe(el);
+    });
 
-        // Intro loader: 0–100% then fade out, then reveal hero quote (NEW)
+    // Intro loader: 0–100% then fade out, then reveal hero quote
     window.addEventListener('load', () => {
       const homeQuote = document.querySelector('#home .hero-quote');
       const loader = document.getElementById('page-loader');
       const barFill = document.getElementById('loader-bar-fill');
       const percentText = document.getElementById('loader-percent');
 
-      // Fallback: if loader elements are missing, just show quote
       if (!loader || !barFill || !percentText) {
         if (homeQuote) homeQuote.classList.add('visible');
         return;
       }
 
       let progress = 0;
-      const duration = 1800; // total ms for 0–100
+      const duration = 2600; // total ms for 0–100
       const step = 24;
       const increment = 100 / (duration / step);
 
@@ -968,7 +976,7 @@
           setTimeout(() => {
             loader.classList.add('hidden');
             if (homeQuote) homeQuote.classList.add('visible');
-          }, 360);
+          }, 500);
         }
 
         const rounded = Math.round(progress);
