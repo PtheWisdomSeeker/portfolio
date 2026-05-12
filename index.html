@@ -93,25 +93,39 @@
     }
 
     /* Fullscreen intro loader with site colors (NEW) */
-    #page-loader {
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 10%, var(--black-3) 0%, transparent 55%),
-        radial-gradient(circle at 80% 90%, var(--black-4) 0%, transparent 60%),
-        var(--black-1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9998;
-      color: var(--white);
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
+    /* Animated gradient background for loader */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, var(--black-3) 0%, transparent 55%),
+    radial-gradient(circle at 80% 90%, var(--black-4) 0%, transparent 60%),
+    var(--black-1);
+  background-size: 160% 160%;
+  animation: loaderGradient 14s ease-in-out infinite alternate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  color: var(--white);
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
 
     #page-loader.hidden {
       opacity: 0;
       visibility: hidden;
     }
+
+      @keyframes loaderGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
 
     .loader-inner {
       width: min(540px, 90vw);
@@ -953,7 +967,7 @@
       }
 
       let progress = 0;
-      const duration = 1800; // total ms for 0–100
+      const duration = 2600; // total ms for 0–100
       const step = 24;
       const increment = 100 / (duration / step);
 
@@ -968,7 +982,7 @@
           setTimeout(() => {
             loader.classList.add('hidden');
             if (homeQuote) homeQuote.classList.add('visible');
-          }, 360);
+          }, 500);
         }
 
         const rounded = Math.round(progress);
