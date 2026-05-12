@@ -975,6 +975,10 @@
       });
     }
 
+    function easeOutQuart(t) {
+      return 1 - Math.pow(1 - t, 4);
+    }
+
     window.addEventListener('load', () => {
       const homeQuote = document.querySelector('.hero-quote');
       const homeSubtitle = document.querySelector('.hero-subtitle');
@@ -991,18 +995,25 @@
         return;
       }
 
-      let progressVal = 0;
-      const duration = 3200;
-      const step = 32;
-      const increment = 100 / (duration / step);
+      const duration = 4200;
+      const start = performance.now();
 
-      const intervalId = setInterval(() => {
-        progressVal += increment;
+      function updateLoader(now) {
+        const elapsed = now - start;
+        const rawProgress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutQuart(rawProgress);
+        const progressVal = easedProgress * 100;
+        const rounded = Math.round(progressVal);
 
-        if (progressVal >= 100) {
-          progressVal = 100;
-          clearInterval(intervalId);
+        percentText.textContent = rounded + '%';
 
+        const angle = (progressVal / 100) * 360;
+        circleProgress.style.background =
+          `conic-gradient(var(--white) 0deg, var(--white) ${angle}deg, transparent ${angle}deg)`;
+
+        if (rawProgress < 1) {
+          requestAnimationFrame(updateLoader);
+        } else {
           setTimeout(() => {
             loader.classList.add('exiting');
 
@@ -1013,18 +1024,13 @@
               setTimeout(() => {
                 if (homeSubtitle) homeSubtitle.classList.add('visible');
                 if (homeQuote) homeQuote.classList.add('visible');
-              }, 1800);
+              }, 900);
             }, 800);
           }, 300);
         }
+      }
 
-        const rounded = Math.round(progressVal);
-        percentText.textContent = rounded + '%';
-
-        const angle = (rounded / 100) * 360;
-        circleProgress.style.background =
-          `conic-gradient(var(--white) 0deg, var(--white) ${angle}deg, transparent ${angle}deg)`;
-      }, step);
+      requestAnimationFrame(updateLoader);
     });
   </script>
 </body>
