@@ -4,17 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedro Costa Silva - Psychology Portfolio</title>
-  <!-- Fonts for loader + headings -->
+  <!-- Display + mono fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --gold: #D4AF37;
       --white: #FFFFFF;
-      /* lighter blue theme */
-      --black-1: #102547;   /* main background: deep but lighter blue */
-      --black-2: #173568;   /* mid blue */
-      --black-3: #21447F;   /* lighter surface */
-      --black-4: #2B5A9B;   /* lightest accent */
+      --black-1: #102547;
+      --black-2: #173568;
+      --black-3: #21447F;
+      --black-4: #2B5A9B;
     }
 
     html {
@@ -38,13 +37,10 @@
       letter-spacing: 0.01em;
     }
 
-    /* Layered background with depth */
+    /* Background layers */
     .bg-layer {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       pointer-events: none;
       z-index: 0;
     }
@@ -69,7 +65,7 @@
       opacity: 0.8;
     }
 
-    /* Custom Cursor */
+    /* Custom cursor */
     .cursor-dot,
     .cursor-ring {
       position: fixed;
@@ -95,7 +91,7 @@
       transition: width .3s ease, height .3s ease, opacity .3s ease, border-color .3s ease;
     }
 
-    /* FULLSCREEN PERFORMANCE DASHBOARD LOADER */
+    /* MINIMAL FULLSCREEN LOADER — FEDERICOPIAN STYLE */
     #page-loader {
       position: fixed;
       inset: 0;
@@ -110,7 +106,7 @@
       justify-content: center;
       z-index: 9998;
       color: var(--white);
-      transition: opacity 0.9s ease, visibility 0.9s ease;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
     #page-loader.hidden {
@@ -118,272 +114,69 @@
       visibility: hidden;
     }
 
-    .loader-shell {
-      width: min(960px, 94vw);
-      max-width: 960px;
-      min-height: 70vh;
+    .loader-inner {
+      width: min(900px, 92vw);
+      height: min(420px, 60vh);
+      display: grid;
+      grid-template-rows: 1fr auto;
+      grid-template-columns: 1fr;
+      padding: 2.5rem 2.5rem 2rem;
       border-radius: 24px;
-      padding: 2.1rem 2.5rem 2rem;
       background: linear-gradient(
         145deg,
         rgba(7, 14, 40, 0.96),
         rgba(10, 24, 60, 0.98)
       );
-      border: 1px solid rgba(212,175,55,0.4);
+      border: 1px solid rgba(212,175,55,0.32);
       box-shadow:
-        0 30px 110px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(255,255,255,0.03);
-      display: flex;
-      flex-direction: column;
-      gap: 1.7rem;
-      backdrop-filter: blur(20px);
+        0 32px 110px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(255,255,255,0.02);
+      backdrop-filter: blur(18px);
       transform-origin: center;
-      font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
-    .loader-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'JetBrains Mono', Menlo, monospace;
-      font-size: 0.8rem;
+    .loader-main-line {
+      align-self: center;
+      justify-self: flex-start;
+      text-align: left;
+    }
+
+    .loader-name {
+      font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: clamp(2.6rem, 6.5vw, 4rem);
+      font-weight: 700;
       letter-spacing: 0.26em;
       text-transform: uppercase;
-      opacity: 0.85;
+      line-height: 1.2;
     }
 
-    .loader-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .loader-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 4px;
-      background: var(--gold);
-      box-shadow: 0 0 18px rgba(212,175,55,0.95);
-    }
-
-    .loader-label {
-      opacity: 0.9;
-    }
-
-    .loader-percent {
-      font-variant-numeric: tabular-nums;
-      font-size: 1rem;
-    }
-
-    .loader-main {
-      display: grid;
-      grid-template-columns: 1.1fr 1.1fr;
-      gap: 2.3rem;
-      align-items: center;
-      flex: 1;
-    }
-
-    /* Centered player name + ring + stats */
-    .loader-player-block {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
-    .loader-player-label {
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      font-size: 0.86rem;
-      opacity: 0.8;
-    }
-
-    .loader-player-name {
-      font-size: clamp(2rem, 5vw, 2.8rem);
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .loader-player-subtitle {
+    .loader-sub {
+      margin-top: 0.6rem;
       font-family: 'JetBrains Mono', Menlo, monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       opacity: 0.75;
     }
 
-    .loader-dashboard-row {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      margin-top: 0.5rem;
-    }
-
-    .loader-progress-ring {
-      width: 130px;
-      height: 130px;
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .loader-progress-ring svg {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-    }
-
-    .loader-ring-bg {
-      stroke: rgba(255,255,255,0.08);
-      stroke-width: 9;
-    }
-
-    .loader-ring-fg {
-      stroke: url(#loaderRingGrad);
-      stroke-width: 9;
-      stroke-linecap: round;
-      stroke-dasharray: 339.3; /* 2πr for r=54 */
-      stroke-dashoffset: 339.3;
-    }
-
-    .loader-ring-center {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'JetBrains Mono', Menlo, monospace;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .loader-percent-big {
-      font-size: 2.2rem;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .loader-ring-label {
-      font-size: 0.75rem;
-      opacity: 0.8;
-      margin-top: 0.2rem;
-    }
-
-    .loader-traits {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      font-family: 'JetBrains Mono', Menlo, monospace;
-      font-size: 0.82rem;
-    }
-
-    .loader-trait-row {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .loader-trait-label {
-      width: 10ch;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(231,236,255,0.88);
-    }
-
-    .loader-trait-bar-wrap {
-      flex: 1;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .loader-trait-bar {
-      width: 0%;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--gold), #ffffff);
-      transform-origin: left center;
-    }
-
-    .loader-trait-value {
-      width: 4ch;
-      text-align: right;
-      color: rgba(231,236,255,0.88);
-    }
-
-    /* Right side: heartbeat and labels */
-    .loader-metrics {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      font-family: 'JetBrains Mono', Menlo, monospace;
-    }
-
-    .loader-heartbeat-block {
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: 0.8;
-    }
-
-    .loader-heartbeat-svg {
-      width: 100%;
-      height: 60px;
-      margin-top: 0.4rem;
-    }
-
-    .loader-heartbeat-line {
-      fill: none;
-      stroke: rgba(231,236,255,0.85);
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 260;
-      stroke-dashoffset: 260;
-    }
-
-    .loader-meta-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8rem 1.2rem;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      opacity: 0.8;
-    }
-
-    .loader-meta-label {
-      color: rgba(180,200,255,0.85);
-    }
-
-    .loader-meta-value {
-      color: rgba(255,255,255,0.95);
-      margin-top: 0.1rem;
-      letter-spacing: 0.18em;
-    }
-
-    .loader-footer {
+    .loader-bottom {
+      align-self: flex-end;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       font-family: 'JetBrains Mono', Menlo, monospace;
       font-size: 0.78rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
+      opacity: 0.82;
+    }
+
+    .loader-label {
       opacity: 0.8;
-      margin-top: 0.3rem;
     }
 
-    .loader-skip {
-      cursor: pointer;
-      opacity: 0.85;
-    }
-
-    .loader-skip:hover {
-      opacity: 1;
+    .loader-percent {
+      font-variant-numeric: tabular-nums;
     }
 
     @keyframes loaderGradient {
@@ -481,16 +274,15 @@
       transition: .3s;
     }
 
-    /* Main Content */
+    /* Main layout, rule-of-thirds-ish staging via padding */
     main {
       position: relative;
       z-index: 2;
     }
 
-    /* Section Styling */
     section {
       min-height: 100vh;
-      padding: 15vh 10vw;
+      padding: 18vh 10vw 14vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -595,12 +387,12 @@
       color: var(--gold);
     }
 
-    /* Home Section */
+    /* Home, centered in upper third */
     #home {
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding-top: 20vh;
+      padding-top: 18vh;
     }
 
     .hero-title {
@@ -692,7 +484,7 @@
       100% { transform: translateX(220%) skewX(-20deg); }
     }
 
-    /* About Section */
+    /* About */
     #about .hero-text {
       font-size: clamp(1.1rem, 2vw, 1.5rem);
       color: rgba(255,255,255,1);
@@ -786,12 +578,6 @@
       transform: translateY(-5px);
     }
 
-    @media (max-width: 900px) {
-      .loader-main {
-        grid-template-columns: 1fr;
-      }
-    }
-
     @media (max-width: 768px) {
       nav {
         padding: 1.5rem 5vw;
@@ -822,7 +608,7 @@
       }
 
       section {
-        padding: 12vh 8vw;
+        padding: 14vh 8vw 12vh;
       }
 
       .featured-grid {
@@ -836,7 +622,7 @@
 
     @media (max-width: 480px) {
       section {
-        padding: 10vh 6vw;
+        padding: 12vh 6vw 10vh;
       }
 
       .content-block {
@@ -863,110 +649,16 @@
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
 
-  <!-- FULLSCREEN PERFORMANCE DASHBOARD LOADER -->
+  <!-- Minimal fullscreen loader -->
   <div id="page-loader">
-    <div class="loader-shell" id="loader-shell">
-      <div class="loader-header">
-        <div class="loader-header-left">
-          <div class="loader-dot"></div>
-          <span class="loader-label">Performance analytics</span>
-        </div>
+    <div class="loader-inner">
+      <div class="loader-main-line">
+        <div class="loader-name">PEDRO COSTA SILVA</div>
+        <div class="loader-sub">Psychology · Statistics</div>
+      </div>
+      <div class="loader-bottom">
+        <span class="loader-label">Portfolio loading</span>
         <span class="loader-percent" id="loader-percent">000%</span>
-      </div>
-
-      <div class="loader-main">
-        <!-- Left: player identity + ring + traits -->
-        <div class="loader-player-block">
-          <div>
-            <div class="loader-player-label">player</div>
-            <div class="loader-player-name">PEDRO COSTA SILVA</div>
-            <div class="loader-player-subtitle">Psychology · Statistics · Soccer</div>
-          </div>
-
-          <div class="loader-dashboard-row">
-            <div class="loader-progress-ring" id="loader-ring">
-              <svg viewBox="0 0 120 120">
-                <defs>
-                  <linearGradient id="loaderRingGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#D4AF37" />
-                    <stop offset="100%" stop-color="#FFFFFF" />
-                  </linearGradient>
-                </defs>
-                <circle cx="60" cy="60" r="54" class="loader-ring-bg" fill="none" />
-                <circle cx="60" cy="60" r="54" class="loader-ring-fg" fill="none" id="loader-ring-fg" />
-              </svg>
-              <div class="loader-ring-center">
-                <span class="loader-percent-big" id="loader-percent-big">0</span>
-                <span class="loader-ring-label">readiness</span>
-              </div>
-            </div>
-
-            <div class="loader-traits">
-              <div class="loader-trait-row">
-                <span class="loader-trait-label">FOCUS</span>
-                <div class="loader-trait-bar-wrap">
-                  <div class="loader-trait-bar" data-target="86"></div>
-                </div>
-                <span class="loader-trait-value">00</span>
-              </div>
-              <div class="loader-trait-row">
-                <span class="loader-trait-label">GRIT</span>
-                <div class="loader-trait-bar-wrap">
-                  <div class="loader-trait-bar" data-target="93"></div>
-                </div>
-                <span class="loader-trait-value">00</span>
-              </div>
-              <div class="loader-trait-row">
-                <span class="loader-trait-label">CONSC.</span>
-                <div class="loader-trait-bar-wrap">
-                  <div class="loader-trait-bar" data-target="78"></div>
-                </div>
-                <span class="loader-trait-value">00</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: heartbeat + meta -->
-        <div class="loader-metrics">
-          <div class="loader-heartbeat-block">
-            heartbeat
-            <svg class="loader-heartbeat-svg" viewBox="0 0 260 60">
-              <path
-                id="loader-heartbeat-line"
-                class="loader-heartbeat-line"
-                d="M5 30 L35 30 L55 10 L75 50 L95 20 L120 30 L145 30 L165 12 L185 48 L205 24 L230 30 L255 30"
-              />
-            </svg>
-          </div>
-
-          <div class="loader-meta-grid">
-            <div>
-              <div class="loader-meta-label">mode</div>
-              <div class="loader-meta-value">GROWTH</div>
-            </div>
-            <div>
-              <div class="loader-meta-label">session</div>
-              <div class="loader-meta-value">PORTFOLIO</div>
-            </div>
-            <div>
-              <div class="loader-meta-label">discipline</div>
-              <div class="loader-meta-value">PSY · STATS</div>
-            </div>
-            <div>
-              <div class="loader-meta-label">status</div>
-              <div class="loader-meta-value" id="loader-status">BOOTING</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="loader-footer">
-        <span>analytics engine v1.0</span>
-        <div>
-          <span class="loader-skip" id="loader-skip">skip intro</span>
-          &nbsp;&nbsp;press Enter
-        </div>
       </div>
     </div>
   </div>
@@ -1108,7 +800,7 @@
       </div>
     </section>
 
-    <!-- PRESENTATIONS / PROJECT PAGE -->
+    <!-- PRESENTATIONS -->
     <section id="presentations">
       <h2 class="section-title title-letters">
         <span>P</span><span>r</span><span>o</span><span>j</span><span>e</span><span>c</span><span>t</span><span>&nbsp;</span>
@@ -1192,11 +884,11 @@
     </section>
   </main>
 
-  <!-- GSAP for loader animation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-JW1D1sXz7Y7+u0WPnQ01IwGFdueg9BcPIjJDsxB2P6QK+xfFoifsxDYF1J9Qvf9JhhDN3bAfudk0jYJzDP5irA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- GSAP for loader progress (simple) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script>
-    // Custom Cursor
+    // Custom cursor
     const cursorDot = document.getElementById('cursor-dot');
     const cursorRing = document.getElementById('cursor-ring');
     let mouseX = 0, mouseY = 0;
@@ -1218,7 +910,7 @@
     }
     animateRing();
 
-    document.querySelectorAll('a, button, .hamburger, #loader-skip').forEach(el => {
+    document.querySelectorAll('a, button, .hamburger').forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursorRing.style.width = '52px';
         cursorRing.style.height = '52px';
@@ -1233,7 +925,7 @@
       });
     });
 
-    // Progress Bar
+    // Scroll progress bar
     const progress = document.getElementById('progress');
     window.addEventListener('scroll', () => {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -1250,11 +942,11 @@
     hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
     links.forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
 
-    // Section Observer
+    // Section observer (rule-of-thirds-ish timing)
     const sections = document.querySelectorAll('section');
     const observerOptions = {
       root: null,
-      rootMargin: '-15% 0px -15% 0px',
+      rootMargin: '-20% 0px -20% 0px',
       threshold: 0.1
     };
 
@@ -1263,7 +955,7 @@
         if (e.isIntersecting) {
           const id = e.target.getAttribute('id');
           links.forEach(l => l.classList.remove('active'));
-          const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+          const activeLink = document.querySelector(\`.nav-link[href="#\${id}"]\`);
           if (activeLink) activeLink.classList.add('active');
 
           const title = e.target.querySelector('.section-title');
@@ -1271,39 +963,29 @@
         }
       });
     }, observerOptions);
-
     sections.forEach(s => observer.observe(s));
 
-    // Scroll-Reveal Observer
+    // Scroll-reveal for blocks
     const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.18 });
 
     document.querySelectorAll('.content-block, .hero-quote, .hero-text, .featured-card').forEach((el, index) => {
       el.style.transitionDelay = (0.05 * index) + 's';
       fadeObserver.observe(el);
     });
 
-    // PERFORMANCE DASHBOARD LOADER
+    // Minimal loader: 0 → 100% over ~3.5–4s, fade out
     window.addEventListener('load', () => {
       const loader = document.getElementById('page-loader');
-      const shell = document.getElementById('loader-shell');
-      const percentSmall = document.getElementById('loader-percent');
-      const percentBig = document.getElementById('loader-percent-big');
-      const ring = document.getElementById('loader-ring-fg');
-      const ringWrapper = document.getElementById('loader-ring');
-      const traitBars = document.querySelectorAll('.loader-trait-bar');
-      const traitValues = document.querySelectorAll('.loader-trait-value');
-      const heartbeatLine = document.getElementById('loader-heartbeat-line');
-      const statusLabel = document.getElementById('loader-status');
-      const skipBtn = document.getElementById('loader-skip');
+      const percentEl = document.getElementById('loader-percent');
       const heroQuote = document.querySelector('#home .hero-quote');
 
-      if (!loader || !shell || !ring) {
+      if (!loader || !percentEl) {
         if (heroQuote) heroQuote.classList.add('visible');
         return;
       }
@@ -1311,143 +993,30 @@
       const prefersReducedMotion = window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      function setPercent(p, jitter = false) {
-        let val = Math.max(0, Math.min(100, Math.round(p)));
-        if (jitter && val > 5 && val < 98) {
-          val += Math.random() > 0.5 ? -1 : 1;
-        }
-        const padded = String(val).padStart(3, '0');
-        percentSmall.textContent = padded + '%';
-        percentBig.textContent = val;
-        const circumference = 339.3;
-        const offset = circumference * (1 - val / 100);
-        ring.style.strokeDashoffset = offset;
-      }
-
-      function finishLoader() {
-        setPercent(100);
-        statusLabel.textContent = 'READY';
-        gsap.to(shell, {
-          duration: 0.4,
-          scale: 0.97,
-          ease: 'power3.in',
-          yoyo: true,
-          repeat: 1,
-          onComplete: () => {
-            gsap.to(loader, {
-              duration: 0.7,
-              opacity: 0,
-              onComplete: () => {
-                loader.classList.add('hidden');
-                if (heroQuote) heroQuote.classList.add('visible');
-              }
-            });
-          }
-        });
-      }
-
       if (prefersReducedMotion) {
-        traitBars.forEach((bar, i) => {
-          const target = Number(bar.getAttribute('data-target')) || 80;
-          bar.style.width = target + '%';
-          traitValues[i].textContent = target;
-        });
-        setPercent(100);
-        finishLoader();
+        percentEl.textContent = '100%';
+        loader.classList.add('hidden');
+        if (heroQuote) heroQuote.classList.add('visible');
         return;
       }
 
-      const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
-
-      // Shell entrance
-      tl.from(shell, {
-        duration: 0.7,
-        opacity: 0,
-        y: 30,
-        scale: 0.94
-      });
-
-      // Ring hover micro interaction
-      if (ringWrapper) {
-        ringWrapper.addEventListener('mouseenter', () => {
-          gsap.to(ringWrapper, { scale: 1.06, duration: 0.2, ease: 'power2.out' });
-        });
-        ringWrapper.addEventListener('mouseleave', () => {
-          gsap.to(ringWrapper, { scale: 1.0, duration: 0.3, ease: 'power2.out' });
-        });
-      }
-
-      // Heartbeat pulse
-      if (heartbeatLine) {
-        tl.to(heartbeatLine, {
-          duration: 0.9,
-          strokeDashoffset: 0,
-          ease: 'power3.out'
-        }, '<+0.1').to(heartbeatLine, {
-          duration: 1.1,
-          strokeDashoffset: 260,
-          ease: 'power3.in'
-        }, '>-0.2');
-      }
-
-      // Percent 0 -> 92 with jitter
-      tl.fromTo({ p: 0 }, {
-        p: 92,
-        duration: 3.0, // ~3 seconds
-        ease: 'power2.out',
-        onUpdate: function() {
-          setPercent(this.targets()[0].p, true);
-        }
-      }, '<+0.05');
-
-      // Traits
-      traitBars.forEach((bar, i) => {
-        const target = Number(bar.getAttribute('data-target')) || 80;
-        tl.fromTo(bar,
-          { width: '0%' },
-          {
-            width: target + '%',
-            duration: 1.2,
-            ease: 'elastic.out(1, 0.7)',
-            onUpdate: function() {
-              const current = parseFloat(this.targets()[0].style.width) || 0;
-              traitValues[i].textContent = String(Math.round(current)).padStart(2, '0');
-            }
+      gsap.fromTo(
+        { p: 0 },
+        {
+          p: 100,
+          duration: 3.6,
+          ease: 'power2.out',
+          onUpdate: function() {
+            const val = Math.round(this.targets()[0].p);
+            const padded = String(val).padStart(3, '0');
+            percentEl.textContent = padded + '%';
           },
-          '<+0.15'
-        );
-      });
-
-      // Last 92 -> 100 (no jitter)
-      tl.to({ p: 92 }, {
-        p: 100,
-        duration: 0.7,
-        ease: 'power3.inOut',
-        onUpdate: function() {
-          setPercent(this.targets()[0].p, false);
+          onComplete: () => {
+            loader.classList.add('hidden');
+            if (heroQuote) heroQuote.classList.add('visible');
+          }
         }
-      }, '>-0.3');
-
-      tl.call(() => {
-        statusLabel.textContent = 'READY';
-      }, null, '>-0.2');
-
-      tl.call(() => {
-        finishLoader();
-      });
-
-      function skipIntro() {
-        tl.progress(1, false);
-      }
-
-      if (skipBtn) {
-        skipBtn.addEventListener('click', skipIntro);
-      }
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          skipIntro();
-        }
-      });
+      );
     });
   </script>
 </body>
