@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pedro Costa Silva - Psychology Portfolio</title>
   <style>
     :root {
@@ -13,6 +13,9 @@
       --black-2: #173568;   /* mid blue */
       --black-3: #21447F;   /* lighter surface */
       --black-4: #2B5A9B;   /* lightest accent */
+
+      --spotlight-bg: rgba(0, 0, 0, 0.35);
+      --spotlight-section-bg: rgba(255, 255, 255, 0.02);
     }
 
     html {
@@ -34,9 +37,10 @@
       font-size: clamp(16px, 1rem + 0.25vw, 19px);
       line-height: 1.7;
       letter-spacing: 0.01em;
+      transition: background-color 0.4s ease;
     }
 
-    /* Layered background with depth */
+    /* Layered background with depth + parallax */
     .bg-layer {
       position: fixed;
       top: 0;
@@ -45,6 +49,7 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
+      will-change: transform;
     }
 
     .bg-layer-1 {
@@ -108,12 +113,13 @@
       justify-content: center;
       z-index: 9998;
       color: var(--white);
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
     }
 
     #page-loader.hidden {
       opacity: 0;
       visibility: hidden;
+      transform: translateY(-100%);
     }
 
     .loader-inner {
@@ -153,7 +159,15 @@
       letter-spacing: 0.22em;
       text-transform: uppercase;
       opacity: 0.75;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .loader-mission {
+      font-size: 0.9rem;
+      opacity: 0.85;
+      margin-bottom: 1.75rem;
+      max-width: 40ch;
+      line-height: 1.6;
     }
 
     .loader-bar-track {
@@ -162,6 +176,7 @@
       border-radius: 999px;
       background: rgba(255,255,255,0.18);
       overflow: hidden;
+      margin-bottom: 1rem;
     }
 
     .loader-bar-fill {
@@ -171,6 +186,40 @@
       border-radius: inherit;
       transform-origin: left center;
       transition: width 0.09s linear;
+    }
+
+    .loader-log {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      opacity: 0.8;
+      min-height: 3.5em;
+    }
+
+    .loader-log-line {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .loader-log-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .loader-skip {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      opacity: 0.7;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .loader-skip:hover {
+      opacity: 1;
     }
 
     @keyframes loaderGradient {
@@ -220,12 +269,21 @@
       flex-shrink: 0;
     }
 
+    .nav-links-wrapper {
+      position: relative;
+      flex: 1 1 auto;
+      display: flex;
+      justify-content: flex-end;
+    }
+
     .nav-links {
       display: flex;
       gap: 3rem;
       list-style: none;
       flex: 1 1 auto;
       justify-content: flex-end;
+      position: relative;
+      z-index: 2;
     }
 
     .nav-link {
@@ -237,6 +295,7 @@
       transition: color .3s ease;
       text-transform: uppercase;
       font-weight: 500;
+      padding: 0.25rem 0;
     }
 
     .nav-link::after {
@@ -260,11 +319,31 @@
       color: var(--gold);
     }
 
+    /* Floating nav pill */
+    .nav-pill {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 2rem;
+      background: rgba(16, 37, 71, 0.95);
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .nav-pill.visible {
+      opacity: 1;
+    }
+
     .hamburger {
       display: none;
       flex-direction: column;
       gap: 6px;
       cursor: pointer;
+      margin-left: 1rem;
     }
 
     .hamburger span {
@@ -287,6 +366,19 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      position: relative;
+      z-index: 1;
+      background: transparent;
+      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    body.section-active section {
+      background: var(--spotlight-bg);
+    }
+
+    section.section-spotlight {
+      background: var(--spotlight-section-bg);
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.65);
     }
 
     .section-title {
@@ -360,7 +452,7 @@
     .content-block h3 {
       font-size: clamp(1.5rem, 3vw, 2rem);
       color: var(--white);
-      margin-bottom: 3vh;
+      margin-bottom: 1.5vh;
       font-weight: 600;
     }
 
@@ -391,6 +483,26 @@
       color: var(--gold);
     }
 
+    /* Meta chips for projects */
+    .meta-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .meta-chip {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.4);
+      color: rgba(255,255,255,0.9);
+      background: rgba(16,37,71,0.7);
+    }
+
     /* Home Section */
     #home {
       justify-content: center;
@@ -408,6 +520,13 @@
       opacity: 0;
       animation: glitchFadeIn 1.5s ease forwards;
       text-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      display: inline-block;
+      cursor: default;
+      transition: transform 0.25s ease;
+    }
+
+    .hero-title:hover {
+      transform: rotate(-1deg) translateY(-2px);
     }
 
     @keyframes glitchFadeIn {
@@ -457,6 +576,53 @@
     #home .hero-quote.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* Scroll down arrow */
+    .scroll-down {
+      position: absolute;
+      bottom: 10vh;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      opacity: 0;
+      animation: fadeInUp 1s ease 1.4s forwards;
+    }
+
+    .scroll-down-icon {
+      width: 18px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-down-icon::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      width: 3px;
+      height: 8px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 999px;
+      transform: translateX(-50%);
+      animation: scrollDot 1.4s ease-in-out infinite;
+    }
+
+    @keyframes scrollDot {
+      0% { opacity: 0; transform: translate(-50%, 0); }
+      40% { opacity: 1; transform: translate(-50%, 6px); }
+      100% { opacity: 0; transform: translate(-50%, 14px); }
     }
 
     /* About Section */
@@ -561,6 +727,15 @@
         padding: 1.5rem 5vw;
       }
 
+      .nav-links-wrapper {
+        justify-content: flex-end;
+        flex: 0 0 auto;
+      }
+
+      .nav-pill {
+        display: none;
+      }
+
       .nav-links {
         position: fixed;
         top: 0;
@@ -596,6 +771,10 @@
       .hero-title {
         letter-spacing: -1px;
       }
+
+      .scroll-down {
+        display: none;
+      }
     }
 
     @media (max-width: 480px) {
@@ -609,6 +788,15 @@
 
       .section-title {
         margin-bottom: 6vh;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -627,8 +815,21 @@
       </div>
       <div class="loader-name">PEDRO COSTA SILVA</div>
       <div class="loader-subtitle">Psychology &amp; Statistics</div>
+      <div class="loader-mission">
+        Documenting how data, personality, and grit shape real-world performance.
+      </div>
       <div class="loader-bar-track">
         <div class="loader-bar-fill" id="loader-bar-fill"></div>
+      </div>
+      <div class="loader-log" id="loader-log">
+        <div class="loader-log-line" data-at="15">Loading datasets...</div>
+        <div class="loader-log-line" data-at="40">Calibrating personality model...</div>
+        <div class="loader-log-line" data-at="65">Stabilizing hypotheses...</div>
+        <div class="loader-log-line" data-at="85">Preparing portfolio sections...</div>
+      </div>
+      <div class="loader-skip" id="loader-skip">
+        <span>Skip intro</span>
+        <span>↳</span>
       </div>
     </div>
   </div>
@@ -640,14 +841,17 @@
 
   <nav>
     <div class="logo">PEDRO COSTA SILVA</div>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#home" class="nav-link active">Home</a></li>
-      <li><a href="#about" class="nav-link">About</a></li>
-      <li><a href="#philosophy" class="nav-link">Philosophy</a></li>
-      <li><a href="#coursework" class="nav-link">Coursework</a></li>
-      <li><a href="#presentations" class="nav-link">Project Page</a></li>
-      <li><a href="#reflections" class="nav-link">Reflections</a></li>
-    </ul>
+    <div class="nav-links-wrapper">
+      <div class="nav-pill" id="nav-pill"></div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#philosophy" class="nav-link">Philosophy</a></li>
+        <li><a href="#coursework" class="nav-link">Coursework</a></li>
+        <li><a href="#presentations" class="nav-link">Project Page</a></li>
+        <li><a href="#reflections" class="nav-link">Reflections</a></li>
+      </ul>
+    </div>
     <div class="hamburger" id="hamburger">
       <span></span>
       <span></span>
@@ -663,6 +867,11 @@
       <p class="hero-quote">
         "Nothing in life is to be feared, it is only to be understood."
       </p>
+
+      <div class="scroll-down" id="scroll-down">
+        <div class="scroll-down-icon"></div>
+        <span>Scroll</span>
+      </div>
     </section>
 
     <!-- ABOUT -->
@@ -730,37 +939,55 @@
       </h2>
 
       <div class="content-block">
-        <h3> class="hover-letters">Projects &amp;class="hover-letters">Assignments (Psychology of Personality — Psy 301)</h3>
+        <h3>Projects &amp; Assignments (Psychology of Personality — Psy 301)</h3>
+        <div class="meta-chips">
+          <span class="meta-chip">Course: Psy 301</span>
+          <span class="meta-chip">Duration: 6 weeks</span>
+          <span class="meta-chip">Trait: Conscientiousness</span>
+        </div>
         <p>
-          <strong>class="hover-letters">Personality Project.</strong> For this project in Psychology of Personality, I designed and attempted a six-week behavioral intervention aimed at increasing my conscientiousness, which initially tested at about the 4th percentile on the Big Five inventory. I created a system of weekly challenges focused on academic follow-through: attending every class I could, arriving on time with materials, and handwriting 100–150 word mini-reflections within six hours after each class. My plan was rooted in current personality-change research done by Hudson et al. (2019), who suggested that meaningful trait change depends on consistently enacting trait-relevant behaviors over time (not just willpower).
+          <strong>Personality Project.</strong> For this project in Psychology of Personality, I designed and attempted a six-week behavioral intervention aimed at increasing my conscientiousness, which initially tested at about the 4th percentile on the Big Five inventory. I created a system of weekly challenges focused on academic follow-through: attending every class I could, arriving on time with materials, and handwriting 100–150 word mini-reflections within six hours after each class. My plan was rooted in current personality-change research done by Hudson et al. (2019), who suggested that meaningful trait change depends on consistently enacting trait-relevant behaviors over time (not just willpower).
         </p>
       </div>
 
       <div class="content-block">
-        <h3>class="hover-letters">Factor Analysis</h3>
+        <h3>Factor Analysis</h3>
+        <div class="meta-chips">
+          <span class="meta-chip">Method: EFA</span>
+          <span class="meta-chip">Rotation: Promax</span>
+          <span class="meta-chip">Big Five Structure</span>
+        </div>
         <p>
           In this project, I was challenged to use an exploratory factor analysis to see whether a short personality survey would recover the classic Big Five traits from item-level data. I ran a Maximum Likelihood factor analysis with Promax rotation, suppressing loadings below .30 to focus on the strongest relationships between items and factors. The analysis showed a five-factor solution that closely approximated Extraversion, Agreeableness, Conscientiousness, Neuroticism, and Openness to Experience. I learned that abstract traits can emerge from concrete self-descriptions.
         </p>
       </div>
 
       <div class="content-block">
-        <h3>class="hover-letters">Jamovi Projects (Statistics — Psy 309)</h3>
+        <h3>Jamovi Projects (Statistics — Psy 309)</h3>
+        <div class="meta-chips">
+          <span class="meta-chip">Software: jamovi</span>
+          <span class="meta-chip">Course: Psy 309</span>
+        </div>
         <p>
-          <strong>class="hover-letters">Project 1: Data exploration and descriptive statistics.</strong> I learned about the importance of visualizing data and summarizing it through measures of central tendency. For example, I reported on MLU (Mean Length of Utterance) for 20 patients and described the distribution in terms of mean, SD, range, and modal values.
+          <strong>Project 1: Data exploration and descriptive statistics.</strong> I learned about the importance of visualizing data and summarizing it through measures of central tendency. For example, I reported on MLU (Mean Length of Utterance) for 20 patients and described the distribution in terms of mean, SD, range, and modal values.
         </p>
         <p>
-          <strong>class="hover-letters">Project 2: t-tests.</strong> I explored how inferential statistics can be used to make claims about the unknown. Using a one-sample t test, I compared a sample mean test score to a population mean and interpreted the significance of the difference when an outlier was included.
+          <strong>Project 2: t-tests.</strong> I explored how inferential statistics can be used to make claims about the unknown. Using a one-sample t test, I compared a sample mean test score to a population mean and interpreted the significance of the difference when an outlier was included.
         </p>
         <p>
-          <strong>class="hover-letters">Project 3: ANOVA.</strong> I learned why controlling variability within groups is crucial when comparing them. A one-way ANOVA tested the effect of teaching method on reading comprehension, checking assumptions like homogeneity of variance and interpreting post-hoc tests.
+          <strong>Project 3: ANOVA.</strong> I learned why controlling variability within groups is crucial when comparing them. A one-way ANOVA tested the effect of teaching method on reading comprehension, checking assumptions like homogeneity of variance and interpreting post-hoc tests.
         </p>
         <p>
-          <strong>class="hover-letters">Project 4: Correlation &amp; Regression.</strong> I engaged deeply with the idea that “correlation is not causation.” I used Pearson correlation and simple linear regression to test relationships between medication dosage and heart rate, interpreting effect sizes, p-values, and explained variance.
+          <strong>Project 4: Correlation &amp; Regression.</strong> I engaged deeply with the idea that “correlation is not causation.” I used Pearson correlation and simple linear regression to test relationships between medication dosage and heart rate, interpreting effect sizes, p-values, and explained variance.
         </p>
       </div>
 
       <div class="content-block">
-        <h3>class="hover-letters">Chi-Square &amp; Mindmap</h3>
+        <h3>Chi-Square &amp; Mindmap</h3>
+        <div class="meta-chips">
+          <span class="meta-chip">Method: Chi-square</span>
+          <span class="meta-chip">Topic: Soccer &amp; Nationality</span>
+        </div>
         <p>
           <strong>Chi Square Method of Hypothesis.</strong> I used chi-square to examine how two categorical variables relate, framing it around soccer and nationality. I found that being Brazilian vs. American was statistically associated with soccer skill, illustrating how categorical relationships can be tested.
         </p>
@@ -799,14 +1026,14 @@
       </h2>
 
       <div class="content-block">
-        <h3>class="hover-letters">Writing Sample I'm Most Proud Of (Personality)</h3>
+        <h3>Writing Sample I'm Most Proud Of (Personality)</h3>
         <p>
           “The constructs we hold fundamentally shift how we experience ourselves and others around us. In a compensatory reflex toward self protection (what can also be called the EGO) we merge ourselves with extremes; even if the behavior is counterproductive. The major takeaway for me is that in order to become a more loving being, we ought to practice thinking of constructs (people, circumstances) in a continuous spectrum rather than in opposite, fixed states (Good, bad; Fair, unfair). In this way, I believe we ought to optimize our environments so that they can produce in us heuristics that yield positive results at the micro level (interpersonally) and the macro level (society as a whole).”
         </p>
       </div>
 
       <div class="content-block">
-        <h3>class="hover-letters">Expectations vs. Reality (Personality)</h3>
+        <h3>Expectations vs. Reality (Personality)</h3>
         <p>
           Frankly speaking, I did not expect much from it, as I had already taken a different version with a different professor before. I expected it to be fairly familiar conceptually, but I couldn't have been more wrong. Dr. Xeriland introduced various concepts borrowed from <em>Physics</em> in order for us to have a framework to understand personality (such as Chaos Theory). It was a bit stumping at first, but as I got accustomed to the different definitions, it allowed me to look at human personality through a lens I had never seen before.
         </p>
@@ -819,7 +1046,7 @@
       </div>
 
       <div class="content-block">
-        <h3>class="hover-letters">Final Remarks (Personality)</h3>
+        <h3>Final Remarks (Personality)</h3>
         <p>
           One of the core advantages of studying personality is that being exposed to different ways of framing human behavior carries an inherent lesson on humility and compassion.
         </p>
@@ -832,14 +1059,14 @@
       </div>
 
       <div class="content-block">
-        <h3>class="hover-letters">Expectation vs Reality (Statistics)</h3>
+        <h3>Expectation vs Reality (Statistics)</h3>
         <p>
           My expectations coming into the class were that I'd be taught theorems and formulas all over again (I have taken this class and failed before), the same old same old. But what I actually got was an instructor who was committed to teaching the fundamental concepts of Statistics, not that we just memorize information and move along without learning anything. Having such commitment displayed in the classroom was by far the most satisfying part of the course. The most challenging part of it was the homework.
         </p>
       </div>
 
       <div class="content-block">
-        <h3>class="hover-letters">How my Mind was Changed (Statistics)</h3>
+        <h3>How my Mind was Changed (Statistics)</h3>
         <p>
           My view of Statistics in the beginning of the semester had been that it is an amazing tool for finding out the “truth”. When I shared that thought to Dr. Xeriland, he quickly shut down the idea. He explained how you can never truly know the full picture, and that's why we have stats in the first place. So I've changed my mind to say that Stats is an excellent tool to achieve the most optimal level of clarity and accuracy when facing uncertainty about something bigger than what you can grasp.
         </p>
@@ -878,7 +1105,7 @@
     animateRing();
 
     // Cursor hover effects
-    document.querySelectorAll('a, button, .hamburger').forEach(el => {
+    document.querySelectorAll('a, button, .hamburger, .scroll-down').forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursorRing.style.width = '52px';
         cursorRing.style.height = '52px';
@@ -891,6 +1118,18 @@
         cursorRing.style.borderColor = 'var(--gold)';
         cursorRing.style.opacity = '.4';
       });
+    });
+
+    // Parallax background
+    const bg1 = document.querySelector('.bg-layer-1');
+    const bg2 = document.querySelector('.bg-layer-2');
+    const bg3 = document.querySelector('.bg-layer-3');
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      if (bg1) bg1.style.transform = `translateY(${scrollY * 0.02}px)`;
+      if (bg2) bg2.style.transform = `translateY(${scrollY * 0.04}px)`;
+      if (bg3) bg3.style.transform = `translateY(${scrollY * 0.06}px)`;
     });
 
     // Progress Bar
@@ -906,17 +1145,36 @@
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
     const links = document.querySelectorAll('.nav-link');
+    const navPill = document.getElementById('nav-pill');
 
     hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
     links.forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
 
-    // Section Observer (active nav + section title)
+    function updateNavPill() {
+      if (!navPill) return;
+      const active = document.querySelector('.nav-link.active');
+      if (!active || window.innerWidth <= 768) {
+        navPill.classList.remove('visible');
+        return;
+      }
+      const rect = active.getBoundingClientRect();
+      const navRect = active.closest('.nav-links-wrapper').getBoundingClientRect();
+      navPill.style.left = (rect.left - navRect.left - 10) + 'px';
+      navPill.style.width = (rect.width + 20) + 'px';
+      navPill.classList.add('visible');
+    }
+
+    window.addEventListener('resize', updateNavPill);
+
+    // Section Observer (active nav + section title + spotlight)
     const sections = document.querySelectorAll('section');
     const observerOptions = {
       root: null,
-      rootMargin: '-15% 0px -15% 0px',
-      threshold: 0.1
+      rootMargin: '-35% 0px -35% 0px',
+      threshold: 0.2
     };
+
+    const sectionOrder = Array.from(sections).map(s => s.id);
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -928,6 +1186,16 @@
 
           const title = e.target.querySelector('.section-title');
           if (title) title.classList.add('in-view');
+
+          // Spotlight
+          document.body.classList.add('section-active');
+          sections.forEach(s => s.classList.remove('section-spotlight'));
+          e.target.classList.add('section-spotlight');
+
+          updateNavPill();
+
+          // remember active section for keyboard nav
+          currentSectionIndex = sectionOrder.indexOf(id);
         }
       });
     }, observerOptions);
@@ -948,41 +1216,105 @@
       fadeObserver.observe(el);
     });
 
-    // Intro loader: 0–100% then fade out, then reveal hero quote
+    // Intro loader: fake progress with slowdown near 100, curtain slide, reveal hero quote
     window.addEventListener('load', () => {
       const homeQuote = document.querySelector('#home .hero-quote');
       const loader = document.getElementById('page-loader');
       const barFill = document.getElementById('loader-bar-fill');
       const percentText = document.getElementById('loader-percent');
+      const logLines = document.querySelectorAll('.loader-log-line');
+      const skipBtn = document.getElementById('loader-skip');
 
       if (!loader || !barFill || !percentText) {
         if (homeQuote) homeQuote.classList.add('visible');
         return;
       }
 
-      let progress = 0;
-      const duration = 2600; // total ms for 0–100
-      const step = 24;
-      const increment = 100 / (duration / step);
-
+      let progressVal = 0;
+      const baseDuration = 2400;
+      const step = 26;
       const intervalId = setInterval(() => {
-        progress += increment;
+        // speed up early, slow near the end
+        if (progressVal < 80) {
+          progressVal += 100 / (baseDuration / step);
+        } else {
+          progressVal += 100 / (baseDuration * 2 / step);
+        }
 
-        if (progress >= 100) {
-          progress = 100;
+        if (progressVal >= 100) {
+          progressVal = 100;
           clearInterval(intervalId);
-
-          // small pause at 100, then fade loader, then show hero quote
           setTimeout(() => {
             loader.classList.add('hidden');
             if (homeQuote) homeQuote.classList.add('visible');
-          }, 500);
+          }, 400);
         }
 
-        const rounded = Math.round(progress);
+        const rounded = Math.round(progressVal);
         barFill.style.width = rounded + '%';
         percentText.textContent = rounded + '%';
+
+        logLines.forEach(line => {
+          const at = Number(line.getAttribute('data-at'));
+          if (rounded >= at) {
+            line.classList.add('visible');
+          }
+        });
       }, step);
+
+      function skipLoader() {
+        clearInterval(intervalId);
+        barFill.style.width = '100%';
+        percentText.textContent = '100%';
+        logLines.forEach(line => line.classList.add('visible'));
+        setTimeout(() => {
+          loader.classList.add('hidden');
+          if (homeQuote) homeQuote.classList.add('visible');
+        }, 150);
+      }
+
+      if (skipBtn) {
+        skipBtn.addEventListener('click', skipLoader);
+      }
+    });
+
+    // Scroll down arrow behavior
+    const scrollDown = document.getElementById('scroll-down');
+    if (scrollDown) {
+      scrollDown.addEventListener('click', () => {
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+          aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+
+    // Keyboard navigation between sections (Up/Down or K/J)
+    let currentSectionIndex = 0;
+
+    document.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+      if (['arrowdown', 'j'].includes(key)) {
+        e.preventDefault();
+        if (currentSectionIndex < sectionOrder.length - 1) {
+          currentSectionIndex += 1;
+          const nextId = sectionOrder[currentSectionIndex];
+          const nextSection = document.getElementById(nextId);
+          if (nextSection) {
+            nextSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      } else if (['arrowup', 'k'].includes(key)) {
+        e.preventDefault();
+        if (currentSectionIndex > 0) {
+          currentSectionIndex -= 1;
+          const prevId = sectionOrder[currentSectionIndex];
+          const prevSection = document.getElementById(prevId);
+          if (prevSection) {
+            prevSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }
     });
   </script>
 </body>
