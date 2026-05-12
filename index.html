@@ -39,7 +39,10 @@
 
     .bg-layer {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
     }
@@ -77,6 +80,7 @@
       height: 6px;
       background: var(--gold);
       border-radius: 50%;
+      opacity: 1;
     }
 
     .cursor-ring {
@@ -86,17 +90,6 @@
       border-radius: 50%;
       opacity: .4;
       transition: width .3s ease, height .3s ease, opacity .3s ease, border-color .3s ease;
-    }
-
-    .progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--gold), rgba(212, 175, 55, 0.5));
-      width: 0%;
-      z-index: 9999;
-      transition: width 0.1s ease;
     }
 
     #page-loader {
@@ -110,12 +103,10 @@
       animation: loaderGradient 14s ease-in-out infinite alternate;
       z-index: 9998;
       color: var(--white);
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 1.6s ease, visibility 0s linear 1.6s;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
-    #page-loader.exiting {
+    #page-loader.hidden {
       opacity: 0;
       visibility: hidden;
     }
@@ -176,6 +167,39 @@
       0% { background-position: 0% 0%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 100%; }
+    }
+
+    @keyframes loaderNetflixOut {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1);
+      }
+      40% {
+        transform: scale(1.03);
+        opacity: 1;
+        filter: brightness(1.4);
+      }
+      100% {
+        transform: scale(1.1);
+        opacity: 0;
+        filter: brightness(0.9);
+      }
+    }
+
+    #page-loader.exiting {
+      animation: loaderNetflixOut 0.8s ease forwards;
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), rgba(212, 175, 55, 0.5));
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
     }
 
     nav {
@@ -267,119 +291,6 @@
       justify-content: center;
     }
 
-    #home {
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding-top: 20vh;
-    }
-
-    .hero-title {
-      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      font-weight: 900;
-      color: var(--white);
-      margin-bottom: 3vh;
-      letter-spacing: -0.06em;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.35);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 2.2s ease, transform 2.2s ease;
-      will-change: opacity, transform;
-    }
-
-    .hero-title.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .hero-title .letter {
-      display: inline-block;
-      transition: transform 0.24s ease, color 0.24s ease;
-      will-change: transform;
-    }
-
-    .hero-title:hover .letter {
-      color: var(--gold);
-    }
-
-    .hero-title:hover .letter:nth-child(1)  { transform: translateY(-8px);  transition-delay: 0s; }
-    .hero-title:hover .letter:nth-child(2)  { transform: translateY(-5px);  transition-delay: 0.02s; }
-    .hero-title:hover .letter:nth-child(3)  { transform: translateY(-9px);  transition-delay: 0.04s; }
-    .hero-title:hover .letter:nth-child(4)  { transform: translateY(-6px);  transition-delay: 0.06s; }
-    .hero-title:hover .letter:nth-child(5)  { transform: translateY(-10px); transition-delay: 0.08s; }
-    .hero-title:hover .letter:nth-child(6)  { transform: translateY(-6px);  transition-delay: 0.10s; }
-    .hero-title:hover .letter:nth-child(7)  { transform: translateY(-8px);  transition-delay: 0.12s; }
-    .hero-title:hover .letter:nth-child(8)  { transform: translateY(-4px);  transition-delay: 0.14s; }
-    .hero-title:hover .letter:nth-child(9)  { transform: translateY(-9px);  transition-delay: 0.16s; }
-    .hero-title:hover .letter:nth-child(10) { transform: translateY(-5px);  transition-delay: 0.18s; }
-    .hero-title:hover .letter:nth-child(11) { transform: translateY(-8px);  transition-delay: 0.20s; }
-    .hero-title:hover .letter:nth-child(12) { transform: translateY(-4px);  transition-delay: 0.22s; }
-    .hero-title:hover .letter:nth-child(13) { transform: translateY(-9px);  transition-delay: 0.24s; }
-    .hero-title:hover .letter:nth-child(14) { transform: translateY(-5px);  transition-delay: 0.26s; }
-    .hero-title:hover .letter:nth-child(15) { transform: translateY(-10px); transition-delay: 0.28s; }
-    .hero-title:hover .letter:nth-child(16) { transform: translateY(-6px);  transition-delay: 0.30s; }
-    .hero-title:hover .letter:nth-child(17) { transform: translateY(-8px);  transition-delay: 0.32s; }
-
-    .hero-subtitle {
-      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-      color: rgba(255,255,255,0.95);
-      margin-bottom: 6vh;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 1.3s ease, transform 1.3s ease;
-    }
-
-    .hero-quote {
-      position: relative;
-      display: inline-block;
-      font-size: clamp(1.1rem, 2vw, 1.4rem);
-      max-width: 60ch;
-      margin: 0 auto;
-      font-style: italic;
-      line-height: 1.8;
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 1.3s ease, transform 1.3s ease;
-    }
-
-    .hero-subtitle.visible,
-    .hero-quote.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .hero-quote span {
-      display: inline-block;
-      background: linear-gradient(
-        120deg,
-        rgba(255,255,255,0.4),
-        var(--gold),
-        rgba(255,255,255,0.4)
-      );
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: quoteLetterPulse 2.4s ease-in-out infinite;
-    }
-
-    .hero-quote span:nth-child(odd) { animation-delay: 0.08s; }
-    .hero-quote span:nth-child(3n) { animation-delay: 0.16s; }
-
-    @keyframes quoteLetterPulse {
-      0%, 100% {
-        background-position: 0% 0%;
-        opacity: 0.8;
-      }
-      50% {
-        background-position: 100% 0%;
-        opacity: 1;
-      }
-    }
-
     .section-title {
       font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 700;
@@ -387,8 +298,8 @@
       margin-bottom: 8vh;
       letter-spacing: -1px;
       opacity: 0;
-      transform: translateY(36px);
-      transition: opacity 1.5s ease, transform 1.5s ease;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
       position: relative;
     }
 
@@ -400,16 +311,16 @@
       width: 0%;
       height: 3px;
       background: linear-gradient(90deg, var(--gold), rgba(212,175,55,0.2));
-      transition: width 0.85s ease;
+      transition: width 0.5s ease;
+    }
+
+    .section-title.in-view::after {
+      width: 90%;
     }
 
     .section-title.in-view {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .section-title.in-view::after {
-      width: 90%;
     }
 
     .title-letters span {
@@ -422,27 +333,11 @@
       color: rgba(212,175,55,0.8);
     }
 
-    #about .hero-text {
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
-      color: rgba(255,255,255,1);
-      line-height: 1.7;
-      max-width: 60ch;
-      margin-bottom: 5vh;
-      opacity: 0;
-      transform: translateY(42px);
-      transition: opacity 1.6s ease, transform 1.6s ease;
-    }
-
-    #about .hero-text.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     .content-block {
       margin-bottom: 12vh;
       opacity: 0;
-      transform: translateY(52px);
-      transition: opacity 1.6s ease, transform 1.6s ease;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
     }
 
     .content-block.visible {
@@ -484,6 +379,125 @@
       color: var(--gold);
     }
 
+    #home {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 20vh;
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 3vh;
+      letter-spacing: -0.06em;
+      opacity: 0;
+      animation: glitchFadeIn 1.5s ease forwards;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    @keyframes glitchFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 6vh;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .hero-quote {
+      position: relative;
+      display: inline-block;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      max-width: 60ch;
+      margin: 0 auto;
+      font-style: italic;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .hero-subtitle.visible,
+    .hero-quote.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-quote span {
+      display: inline-block;
+      background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0.4),
+        var(--gold),
+        rgba(255,255,255,0.4)
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: quoteLetterPulse 2.4s ease-in-out infinite;
+    }
+
+    .hero-quote span:nth-child(odd) {
+      animation-delay: 0.08s;
+    }
+
+    .hero-quote span:nth-child(3n) {
+      animation-delay: 0.16s;
+    }
+
+    @keyframes quoteLetterPulse {
+      0%, 100% {
+        background-position: 0% 0%;
+        opacity: 0.8;
+      }
+      50% {
+        background-position: 100% 0%;
+        opacity: 1;
+      }
+    }
+
+    #about .hero-text {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: rgba(255,255,255,1);
+      line-height: 1.7;
+      max-width: 60ch;
+      margin-bottom: 5vh;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    #about .hero-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #about,
+    #philosophy,
+    #coursework,
+    #presentations,
+    #reflections {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .featured-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -495,13 +509,9 @@
       padding: 4vh 3vw;
       border: 1px solid rgba(212, 175, 55, 0.2);
       background: rgba(212, 175, 55, 0.02);
+      transition: all 0.4s ease;
       opacity: 0;
-      transform: translateY(52px);
-      transition:
-        opacity 1.6s ease,
-        transform 1.6s ease,
-        border-color 0.4s ease,
-        background 0.4s ease;
+      transform: translateY(50px);
     }
 
     .featured-card.visible {
@@ -635,28 +645,6 @@
         bottom: 10vh;
       }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-
-      .hero-title,
-      .hero-subtitle,
-      .hero-quote,
-      .content-block,
-      .featured-card,
-      .hero-text,
-      .section-title {
-        opacity: 1 !important;
-        transform: none !important;
-      }
-    }
   </style>
 </head>
 <body>
@@ -702,16 +690,8 @@
 
   <main>
     <section id="home">
-      <h1 class="hero-title" id="hero-title" aria-label="Pedro Costa Silva">
-        <span class="letter">P</span><span class="letter">E</span><span class="letter">D</span><span class="letter">R</span><span class="letter">O</span>
-        <span class="letter">&nbsp;</span>
-        <span class="letter">C</span><span class="letter">O</span><span class="letter">S</span><span class="letter">T</span><span class="letter">A</span>
-        <span class="letter">&nbsp;</span>
-        <span class="letter">S</span><span class="letter">I</span><span class="letter">L</span><span class="letter">V</span><span class="letter">A</span>
-      </h1>
-
+      <h1 class="hero-title">PEDRO COSTA SILVA</h1>
       <p class="hero-subtitle">Psychology &amp; Statistics</p>
-
       <p class="hero-quote">
         <span>N</span><span>o</span><span>t</span><span>h</span><span>i</span><span>n</span><span>g</span><span>&nbsp;</span>
         <span>i</span><span>n</span><span>&nbsp;</span>
@@ -967,69 +947,56 @@
     links.forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
 
     const sections = document.querySelectorAll('section');
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-
-        const id = entry.target.getAttribute('id');
-        links.forEach(l => l.classList.remove('active'));
-        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
-        if (activeLink) activeLink.classList.add('active');
-
-        const title = entry.target.querySelector('.section-title');
-        if (title) title.classList.add('in-view');
-      });
-    }, {
+    const observerOptions = {
       root: null,
-      rootMargin: '-10% 0px -10% 0px',
-      threshold: 0.12
-    });
+      rootMargin: '-15% 0px -15% 0px',
+      threshold: 0.1
+    };
 
-    sections.forEach(section => sectionObserver.observe(section));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = e.target.getAttribute('id');
+          links.forEach(l => l.classList.remove('active'));
+          const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+          if (activeLink) activeLink.classList.add('active');
 
-    const revealElements = document.querySelectorAll('.content-block, .hero-text, .featured-card');
-
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+          const title = e.target.querySelector('.section-title');
+          if (title) title.classList.add('in-view');
+        }
       });
-    }, {
-      threshold: 0.18,
-      rootMargin: '0px 0px -8% 0px'
-    });
+    }, observerOptions);
 
-    revealElements.forEach(el => revealObserver.observe(el));
+    sections.forEach(s => observer.observe(s));
 
-    function triggerFadeIn(el) {
-      if (!el) return;
-      el.classList.remove('visible');
-      void el.offsetWidth;
-      requestAnimationFrame(() => {
-        el.classList.add('visible');
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
       });
-    }
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.content-block, .hero-text, .featured-card').forEach((el, index) => {
+      el.style.transitionDelay = (0.05 * index) + 's';
+      fadeObserver.observe(el);
+    });
 
     window.addEventListener('load', () => {
-      const heroTitle = document.getElementById('hero-title');
-      const homeSubtitle = document.querySelector('.hero-subtitle');
       const homeQuote = document.querySelector('.hero-quote');
+      const homeSubtitle = document.querySelector('.hero-subtitle');
       const loader = document.getElementById('page-loader');
       const percentText = document.getElementById('loader-percent');
       const circleProgress = document.getElementById('loader-circle-progress');
 
       if (!loader || !percentText || !circleProgress) {
-        triggerFadeIn(heroTitle);
-        setTimeout(() => {
-          if (homeSubtitle) homeSubtitle.classList.add('visible');
-          if (homeQuote) homeQuote.classList.add('visible');
-        }, 2300);
+        if (homeSubtitle) homeSubtitle.classList.add('visible');
+        if (homeQuote) homeQuote.classList.add('visible');
         return;
       }
 
       let progressVal = 0;
-      const duration = 3800;
+      const duration = 3200;
       const step = 32;
       const increment = 100 / (duration / step);
 
@@ -1044,14 +1011,14 @@
             loader.classList.add('exiting');
 
             setTimeout(() => {
-              triggerFadeIn(heroTitle);
+              loader.classList.add('hidden');
 
               setTimeout(() => {
                 if (homeSubtitle) homeSubtitle.classList.add('visible');
                 if (homeQuote) homeQuote.classList.add('visible');
-              }, 2400);
-            }, 1700);
-          }, 500);
+              }, 350);
+            }, 800);
+          }, 300);
         }
 
         const rounded = Math.round(progressVal);
