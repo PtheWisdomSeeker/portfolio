@@ -449,18 +449,8 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       opacity: 0;
-      animation: fadeInUp 1.5s ease 0.3s forwards;
-    }
-
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      transform: translateY(10px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
 
     /* Hero quote with subtle per-letter golden pulse */
@@ -473,11 +463,12 @@
       font-style: italic;
       line-height: 1.8;
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+      transform: translateY(10px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
 
-    #home .hero-quote.visible {
+    .hero-subtitle.visible,
+    .hero-quote.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -529,6 +520,22 @@
     }
 
     #about .hero-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Sections start hidden, fade in after name */
+    #about,
+    #philosophy,
+    #coursework,
+    #presentations,
+    #reflections {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    section.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -1018,20 +1025,24 @@
       });
     }, { threshold: 0.15 });
 
-    document.querySelectorAll('.content-block, .hero-quote, .hero-text, .featured-card').forEach((el, index) => {
+    document.querySelectorAll('.content-block, .hero-text, .featured-card').forEach((el, index) => {
       el.style.transitionDelay = (0.05 * index) + 's';
       fadeObserver.observe(el);
     });
 
-    // Circle loader: 0–100% then Netflix‑style exit, then reveal hero quote
+    // Circle loader: 0–100% then Netflix‑style exit, then staged reveal
     window.addEventListener('load', () => {
-      const homeQuote = document.querySelector('#home .hero-quote');
+      const homeQuote = document.querySelector('.hero-quote');
+      const homeSubtitle = document.querySelector('.hero-subtitle');
       const loader = document.getElementById('page-loader');
       const percentText = document.getElementById('loader-percent');
       const circleProgress = document.getElementById('loader-circle-progress');
 
       if (!loader || !percentText || !circleProgress) {
+        if (homeSubtitle) homeSubtitle.classList.add('visible');
         if (homeQuote) homeQuote.classList.add('visible');
+        document.querySelectorAll('#about, #philosophy, #coursework, #presentations, #reflections')
+          .forEach(sec => sec.classList.add('visible'));
         return;
       }
 
@@ -1047,11 +1058,27 @@
           progressVal = 100;
           clearInterval(intervalId);
 
+          // small pause at 100
           setTimeout(() => {
             loader.classList.add('exiting');
+
+            // after Netflix exit
             setTimeout(() => {
               loader.classList.add('hidden');
-              if (homeQuote) homeQuote.classList.add('visible');
+
+              // 1) 350ms dramatic pause: only name visible
+              setTimeout(() => {
+                if (homeSubtitle) homeSubtitle.classList.add('visible');
+                if (homeQuote) homeQuote.classList.add('visible');
+              }, 350);
+
+              // 2) then fade in rest of sections with stagger
+              setTimeout(() => {
+                const restSections = document.querySelectorAll('#about, #philosophy, #coursework, #presentations, #reflections');
+                restSections.forEach((sec, i) => {
+                  setTimeout(() => sec.classList.add('visible'), i * 120);
+                });
+              }, 700);
             }, 800); // match loaderNetflixOut
           }, 300);
         }
